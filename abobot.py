@@ -68,7 +68,7 @@ class AbobotServer:
             response.status = 500
             return "ERROR: bad request "
     
-        if mode == "subscribe" and token == self.access_token:
+        if mode == "subscribe" and token == self.verify_token:
             print('WEBHOOK_VERIFIED')
             response.status = 200
             return challenge
@@ -82,34 +82,19 @@ class AbobotServer:
                     sender_id = message["sender"]["id"]
                     text = message["message"]["text"]
                     print(f"{sender_id} says {text}")
-        
-                    button_reply = {
-                        "recipient":{
-                            "id": sender_id
-                        },
-                        "message":{
-                            "attachment":{
-                                "type":"template",
-                                "payload":{
-                                    "template_type":"button",
-                                    "text":"What do you want to do next?",
-                                    "buttons":[
-                                        {
-                                            "type":"web_url",
-                                            "url":"https://www.messenger.com",
-                                            "title":"Visit Messenger"
-                                        }
-                                    ]
-                                }
-                            }
-                        }  
-                    }
-                    # TODO
-                    # invalid access token. see https://developers.facebook.com/docs/pages/getting-started#get_token
-                    response = requests.post(url="https://graph.facebook.com/v2.6/me/messages?access_token={self.verify_token}", json=button_reply)
+                    reply_message = self.accountant.getReply(sender_id, message)
+                    if reply_message == "":
+                        return
+                    
+                    params = (
+                        ('"messaging_type"', '"RESPONSE"'),
+                        ('recipient', '{\n  "id": "'+f"{sender_id}"+'"\n}'),
+                        ('message', '{\n     "text": "'+f"{reply_message}"+'"\n}'),
+                        ('access_token', self.access_token),
+                    )
+                    response = requests.post('https://graph.facebook.com/v3.2/me/messages', params=params)
+                    # if response.status_code is not 200:
                     print(response)
-
-
 
 
 if __name__ == '__main__':
