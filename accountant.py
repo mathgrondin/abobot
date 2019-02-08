@@ -7,7 +7,6 @@ from web_view_helper import getStarPage
 class Accountant:
     def __init__(self):
         self.game_timeout = 60 * 60 * 5
-        self.game_timer = threading.Timer(self.game_timeout, self.stopGame)
         self.game_started = False
         self._teams = ["BLANC", "BLEU", "ROUGE", "VERT" ]
         self.current_teams = {}
@@ -19,14 +18,12 @@ class Accountant:
         self.current_teams = {"team_a": team_a,
             "team_b": team_b
         }
-        self.game_timer.start()
         self.game_started = True
         team_a = self.current_teams["team_a"]
         team_b = self.current_teams["team_b"]
         print(f"GAME STARTED: {team_a} VS {team_b}")
 
     def stopGame(self):
-        self.game_timer.cancel()
         self.game_started = False
         team_a = self.current_teams["team_a"]
         team_b = self.current_teams["team_b"]
