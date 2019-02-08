@@ -38,7 +38,7 @@ class Accountant:
                     errors+=1
         
         print(f"error count: {errors}")
-        self.voters.clear()
+        self.voters = {}
         return getStarPage(_players)
 
     def getReply(self, sender_id, message):
@@ -53,7 +53,7 @@ class Accountant:
                 return "Vous avez deja voté pour ce joueur"
             if message.split("-")[1] not in self._teams:
                 return "QUel est cette équipe"
-        self.voters[sender_id].append(message)
+            self.voters[sender_id].append(message)
         replies = self.voters[sender_id]
         team_a = self.current_teams["team_a"]
         team_b = self.current_teams["team_b"]
