@@ -1,10 +1,17 @@
-import bottle
-from bottle import get, post, request, response, static_file, route, template, redirect
 import json
 import os
+import subprocess
+
+from aiohttp import web, web_runner
+import asyncio
+import bottle
 import requests
+import urllib
 
 from accountant import Accountant
+from dynamic_server import startHttpsServerTunnel
+from new_game import newGame
+from web_view_helper import getGameStartedPage
 
 # import Accountant
 
@@ -13,92 +20,139 @@ port = 1234
 
 class AbobotServer:
 
-    def __init__(self, host: str, port: int):
+    def __init__(self):
+        self.host = "localhost"
+        self.port = 0
+        self.accountant = Accountant()
+        self._proc = None
+
+        with open("secrets.json") as data_file:    
+            data = json.load(data_file)
+            self.access_token = data["access_token"]
+            self.verify_token = data["verify_token"]
+            self.app_access_token = data["app_access_token"]
+
+        abs_app_dir_path = os.path.dirname(os.path.realpath(__file__))
+        abs_views_path = os.path.join(abs_app_dir_path, "views")
+        bottle.TEMPLATE_PATH.insert(0, abs_views_path )
+        self._web_runner = web_runner.AppRunner(web.Application())
+        self._web_runner.app.add_routes([web.get(f"/", self.newGame),
+            web.get("/onStartGame", self.onNewGame),
+            web.get("/onStopGame", self.onStopGame),
+            web.get("/messengerWebHook", self.GETMessengerWebhook),
+            web.post("/messengerWebHook", self.POSTMessengerWebhook)
+        ])
+
+    def __del__(self):
+        if self._proc is not None:
+            self._proc.kill()
+
+    async def runServer(self):
+        port, host, proc = startHttpsServerTunnel()
+        self._proc = proc
+        # port = 2000
+        # host = "localhost"
+        self.port = port
+        self.host = host
+
         print(f"###############################################")
         print("Initializing Abobot.")
         print(f"    Host: {host}")
         print(f"    Port: {port}")
         print(f"###############################################")
-        self.host = host
-        self.port = port
-        self.accountant = Accountant()
+        
+        await self._web_runner.setup()
+        site = web.TCPSite(self._web_runner, "localhost", self.port)
+        await site.start()
 
-        with open('secrets.json') as data_file:    
-            data = json.load(data_file)
-            self.access_token = data["access_token"]
-            self.verify_token = data["verify_token"]
+    async def _refreshWebHook(self, retry: int = 1):
+        print("Updating webhook...")
+        url = urllib.parse.quote(self.host, safe='')
+        access_token = urllib.parse.quote(self.app_access_token, safe='')
+        proc = subprocess.Popen(f"curl -i -X POST \"https://graph.facebook.com/v3.2/231642917766296/subscriptions"\
+            f"?callback_url={url}%2FmessengerWebHook&object=page"\
+            f"&fields=messages%2Cmessaging_postbacks"\
+            f"&verify_token={self.verify_token}"\
+            f"&access_token={access_token}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)        
+        return True
 
-        abs_app_dir_path = os.path.dirname(os.path.realpath(__file__))
-        abs_views_path = os.path.join(abs_app_dir_path, 'views')
-        bottle.TEMPLATE_PATH.insert(0, abs_views_path )
-        self.app = bottle.default_app()
-        self.app.routes = [
-            route(path="/", method="GET", callback=self.newGame),
-            route(path="/onStartGame", method="GET", callback=self.onNewGame),
-            route(path="/messengerWebHook", method="GET", callback=self.GETMessengerWebhook),
-            route(path="/messengerWebHook", method="POST", callback=self.POSTMessengerWebhook)
-        ]
-                
-
-    def runServer(self):
-        self.app.run(host=self.host, port=self.port)
-
-    def newGame(self):
+    async def newGame(self, request):
         if self.accountant.game_started:
-            return template("current_game.tpl", self.accountant.current_teams)
-        return static_file("new_game.html", root="static/html")
+            pending_game_page = getGameStartedPage(self.accountant.current_teams)
+            return web.Response(body=pending_game_page, content_type="text/html")
+        response = web.FileResponse(f"{os.getcwd()}/static/html/new_game.html")
+        return response
 
-    def onNewGame(self):
+    async def onNewGame(self, request):
         if self.accountant.game_started:
-            return self.newGame()
+            return await self.newGame(None)
         try:
             team_a = request.query["team_a"]
             team_b = request.query["team_b"]
         except KeyError:
-            return "Invalid game parameters."
+            return web.Response(text="Invalid game parameters.")
         self.accountant.startGame(team_a, team_b)
-        return self.newGame()
+        return await self.newGame(None)
 
-    def GETMessengerWebhook(self):
-        mode = request.query['hub.mode']
-        token = request.query['hub.verify_token']
-        challenge = request.query['hub.challenge']
-        
+    async def onStopGame(self, request):
+        results = self.accountant.stopGame()
+        return web.Response(body=results, content_type="text/html")
+
+    async def GETMessengerWebhook(self, request):
+        mode = request.query["hub.mode"]
+        token = request.query["hub.verify_token"]
         if not mode or not token:
-            response.status = 500
-            return "ERROR: bad request "
+            return web.Response(text="ERROR: bad request ")
     
-        if mode == "subscribe" and token == self.verify_token:
-            print('WEBHOOK_VERIFIED')
-            response.status = 200
-            return challenge
+        if mode == "subscribe" and token == self.verify_token:        
+            print("verifying webhook")        
+            challenge = request.query["hub.challenge"]
+            return web.Response(text=f"{challenge}")
 
-    def POSTMessengerWebhook(self): 
+    async def POSTMessengerWebhook(self, request): 
+
         print("Message received")
-        notification = request.json
-        for entry in notification["entry"]:
-            if "messaging" in entry:
-                for message in entry["messaging"]:
-                    sender_id = message["sender"]["id"]
-                    text = message["message"]["text"]
-                    print(f"{sender_id} says {text}")
-                    reply_message = self.accountant.getReply(sender_id, message)
-                    if reply_message == "":
-                        return
-                    
-                    params = (
-                        ('"messaging_type"', '"RESPONSE"'),
-                        ('recipient', '{\n  "id": "'+f"{sender_id}"+'"\n}'),
-                        ('message', '{\n     "text": "'+f"{reply_message}"+'"\n}'),
-                        ('access_token', self.access_token),
-                    )
-                    response = requests.post('https://graph.facebook.com/v3.2/me/messages', params=params)
-                    # if response.status_code is not 200:
-                    print(response)
+        try:
+            notification = await request.json()
+            for entry in notification["entry"]:
+                if "messaging" in entry:
+                    for message in entry["messaging"]:
+                        sender_id = message["sender"]["id"]
+                        text = message["message"]["text"]
+                        print(f"{sender_id} says {text}")
+                        reply_message = self.accountant.getReply(sender_id, text)
+                        if reply_message == "":
+                            return
+                        
+                        params = {
+                            "messaging_type": "RESPONSE",
+                            "recipient": f"{{\"id\": \"{sender_id}\"}}",
+                            "message": f"{{\n\"text\": \"{reply_message}\"}}",
+                            "access_token": self.access_token
+                        }
+                        response = requests.post("https://graph.facebook.com/v3.2/me/messages", params=params)
+                        print(response)
+        except Exception as e:
+            params = {
+                "messaging_type": "RESPONSE",
+                "recipient": f"{{\"id\": \"{sender_id}\"}}",
+                "message": f"{{\n\"text\": \"Une erreur est survenue...\"}}",
+                "access_token": self.access_token
+            }
+            response = requests.post("https://graph.facebook.com/v3.2/me/messages", params=params)
+            print(e)
+        return web.Response(text="all good")
 
 
-if __name__ == '__main__':
-    server = AbobotServer("localhost",8080)
-    server.runServer()
-    
-    
+if __name__ == "__main__":
+    import multiprocessing
+    multiprocessing.set_start_method("spawn")
+    try:
+        loop = asyncio.get_event_loop()
+        server = AbobotServer()
+        loop.run_until_complete(server.runServer())
+        loop.run_until_complete(server._refreshWebHook())
+        loop.run_forever()
+    except (KeyboardInterrupt, SystemExit):
+        server.__del__()
+

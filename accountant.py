@@ -2,12 +2,14 @@ import asyncio
 import time
 import threading
 
+import players
+from web_view_helper import getStarPage
 class Accountant:
     def __init__(self):
         self.game_timeout = 60 * 60 * 5
         self.game_timer = threading.Timer(self.game_timeout, self.stopGame)
         self.game_started = False
-        self._teams = ["BLANCS", "BLEUS", "ROUGES", "VERTS" ]
+        self._teams = ["BLANC", "BLEU", "ROUGE", "VERT" ]
         self.current_teams = {}
         self.voters = {}
 
@@ -28,28 +30,41 @@ class Accountant:
         self.game_started = False
         team_a = self.current_teams["team_a"]
         team_b = self.current_teams["team_b"]
+
+        errors = 0
+        _players = players.players
+        for voter, votes in self.voters.items():
+            for i in [1,2,3]:
+                try:
+                    _players[votes[i]]+=i
+                except Exception as e:
+                    errors+=1
+        
+        print(f"error count: {errors}")
         self.voters.clear()
-        print(f"GAME ENDED: {team_a} VS {team_b}")
+        return getStarPage(_players)
 
     def getReply(self, sender_id, message):
         if not self.game_started:
             return "Aucun match en cours..."
-        
         if sender_id not in self.voters:
             self.voters[sender_id] = [message]
-            team_a = self.current_teams["team_a"]
-            team_b = self.current_teams["team_b"]
-            return f"Match en cours. {team_a} VS. {team_b}"
         else:
-            replies = self.voters[sender_id]
-            positions = ["troisième", "deuxième", "première"]
-            try:
-                position = positions[len(replies)]
-            except:
-                return "Vous avez déjà voté pour vos étoiles" 
-
-            return f"Vote pour ta {position} ⭐"
-            
+            if message not in players.players:
+                return "Hummm. ce n'est pas un joeur valide."
+            if message in self.voters[sender_id]:
+                return "Vous avez deja voté pour ce joueur"
+            if message.split("-")[1] not in self._teams:
+                return "QUel est cette équipe"
+        self.voters[sender_id].append(message)
+        replies = self.voters[sender_id]
+        team_a = self.current_teams["team_a"]
+        team_b = self.current_teams["team_b"]
+        positions = [f"Match en cours. {team_a} VS. {team_b}\\n Vote pour ta troisième ⭐", "Vote pour ta deuxième ⭐", "Vote pour ta première ⭐", "Merci!"]
+        try:
+            return positions[len(replies)- 1]
+        except:
+            return "Vous avez déjà voté pour vos étoiles"
         return "hein?"
 
 
