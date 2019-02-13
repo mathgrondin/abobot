@@ -2,7 +2,7 @@ import json
 import os
 import subprocess
 
-from aiohttp import web, web_runner
+from aiohttp import ClientSession, web, web_runner
 import asyncio
 import bottle
 import requests
@@ -64,16 +64,31 @@ class AbobotServer:
         await self._web_runner.setup()
         site = web.TCPSite(self._web_runner, "localhost", self.port)
         await site.start()
+        await asyncio.sleep(5)
+        asyncio.ensure_future(self._refreshWebHook())
 
     async def _refreshWebHook(self, retry: int = 1):
-        print("Updating webhook...")
-        url = urllib.parse.quote(self.host, safe='')
+        print(f"Updating webhook (attempt #{retry})...")
+        if retry > 5:
+            print("failed...")
+            return
+        server_url = urllib.parse.quote(self.host, safe='')
         access_token = urllib.parse.quote(self.app_access_token, safe='')
-        proc = subprocess.Popen(f"curl -i -X POST \"https://graph.facebook.com/v3.2/231642917766296/subscriptions"\
-            f"?callback_url={url}%2FmessengerWebHook&object=page"\
-            f"&fields=messages%2Cmessaging_postbacks"\
-            f"&verify_token={self.verify_token}"\
-            f"&access_token={access_token}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)        
+        request_url = "https://graph.facebook.com/v3.2/2390921924269044/subscriptions"
+
+        params = {
+            "callback_url": f"{self.host}/messengerWebHook",
+            "object": "page",
+            "fields": "messages, messaging_postbacks",
+            "verify_token": f"{self.verify_token}",
+            "access_token": f"{access_token}"
+        }
+
+        async with ClientSession() as session:
+            async with session.post(request_url, params=params) as resp:
+                if resp.status is not 200:
+                    await asyncio.sleep(retry)
+                    asyncio.ensure_future(self._refreshWebHook(retry=retry+1))
         return True
 
     async def newGame(self, request):
@@ -151,7 +166,7 @@ if __name__ == "__main__":
         loop = asyncio.get_event_loop()
         server = AbobotServer()
         loop.run_until_complete(server.runServer())
-        loop.run_until_complete(server._refreshWebHook())
+        # loop.run_until_complete(server._refreshWebHook())
         loop.run_forever()
     except (KeyboardInterrupt, SystemExit):
         server.__del__()

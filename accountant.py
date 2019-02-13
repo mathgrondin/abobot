@@ -4,17 +4,18 @@ import threading
 
 import players
 from web_view_helper import getStarPage
+
 class Accountant:
     def __init__(self):
-        self.game_timeout = 60 * 60 * 5
         self.game_started = False
         self._teams = ["BLANC", "BLEU", "ROUGE", "VERT" ]
         self.current_teams = {}
         self.voters = {}
 
     def startGame(self, team_a: str,team_b: str):
-        if team_a not in self._teams or team_b not in self._teams:
+        if team_a not in self._teams or team_b not in self._teams or team_a == team_b:
             return
+
         self.current_teams = {"team_a": team_a,
             "team_b": team_b
         }
@@ -30,29 +31,34 @@ class Accountant:
 
         errors = 0
         _players = players.players
+        stars = {1:"", 2:"", 3:""}
         for voter, votes in self.voters.items():
             for i in [1,2,3]:
                 try:
                     _players[votes[i]]+=i
-                except Exception as e:
+                except Exception:
                     errors+=1
         
+        result = dict(sorted(_players.items(), key=lambda x: x[1]))
         print(f"error count: {errors}")
         self.voters = {}
-        return getStarPage(_players)
+        return getStarPage(result)
 
     def getReply(self, sender_id, message):
         if not self.game_started:
-            return "Aucun match en cours..."
+            if "vote" in message:
+                return "Aucun match en cours..."
+            else:
+                return
+
         if sender_id not in self.voters:
-            self.voters[sender_id] = [message]
+            if "vote" in message:
+                self.voters[sender_id] = [message]
         else:
             if message not in players.players:
-                return "Hummm. ce n'est pas un joeur valide."
+                return "Hummm. ce n'est pas un joueur valide. (ex: 1-BLANC, 1-BLEU, 1-ROUGE, 1-VERT, ...)"
             if message in self.voters[sender_id]:
                 return "Vous avez deja voté pour ce joueur"
-            if message.split("-")[1] not in self._teams:
-                return "QUel est cette équipe"
             self.voters[sender_id].append(message)
         replies = self.voters[sender_id]
         team_a = self.current_teams["team_a"]
@@ -63,8 +69,6 @@ class Accountant:
         except:
             return "Vous avez déjà voté pour vos étoiles"
         return "hein?"
-
-
 
 if __name__ == '__main__':
     import multiprocessing
