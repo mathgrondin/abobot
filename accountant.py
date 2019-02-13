@@ -50,25 +50,24 @@ class Accountant:
                 return "Aucun match en cours..."
             else:
                 return
-
         if sender_id not in self.voters:
             if "vote" in message:
                 self.voters[sender_id] = [message]
-        else:
-            if message not in players.players:
+                team_a = self.current_teams["team_a"]
+                team_b = self.current_teams["team_b"]
+                return f"Match en cours. {team_a} VS. {team_b}\\n Vote pour ta troisième ⭐"
+        elif len(self.voters[sender_id]) < 4:
+            if message not in players.players and len(self.voters[sender_id]) < 3:
                 return "Hummm. ce n'est pas un joueur valide. (ex: 1-BLANC, 1-BLEU, 1-ROUGE, 1-VERT, ...)"
             if message in self.voters[sender_id]:
                 return "Vous avez deja voté pour ce joueur"
+            replies = self.voters[sender_id]
+            positions = ["Vote pour ta deuxième ⭐", "Vote pour ta première ⭐", "Merci!"]
             self.voters[sender_id].append(message)
-        replies = self.voters[sender_id]
-        team_a = self.current_teams["team_a"]
-        team_b = self.current_teams["team_b"]
-        positions = [f"Match en cours. {team_a} VS. {team_b}\\n Vote pour ta troisième ⭐", "Vote pour ta deuxième ⭐", "Vote pour ta première ⭐", "Merci!"]
-        try:
-            return positions[len(replies)- 1]
-        except:
-            return "Vous avez déjà voté pour vos étoiles"
-        return "hein?"
+            try:
+                return positions[len(replies)- 2]
+            except:
+                return "Une erreur est survenue..."
 
 if __name__ == '__main__':
     import multiprocessing

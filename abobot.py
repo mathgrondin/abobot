@@ -136,8 +136,8 @@ class AbobotServer:
                         text = message["message"]["text"]
                         print(f"{sender_id} says {text}")
                         reply_message = self.accountant.getReply(sender_id, text)
-                        if reply_message == "":
-                            return
+                        if reply_message is None:
+                            return web.Response(text="all good")
                         
                         params = {
                             "messaging_type": "RESPONSE",
