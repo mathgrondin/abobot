@@ -30,7 +30,7 @@ class Accountant:
         team_b = self.current_teams["team_b"]
 
         errors = 0
-        _players = players.players
+        _players = players.score    
         stars = {1:"", 2:"", 3:""}
         for voter, votes in self.voters.items():
             for i in [1,2,3]:
@@ -46,24 +46,28 @@ class Accountant:
 
     def getReply(self, sender_id, message):
         if not self.game_started:
-            if "vote" in message:
+            if "VOTE" in message.upper():
                 return "Aucun match en cours..."
             else:
                 return
         if sender_id not in self.voters:
-            if "vote" in message:
+            if "VOTE" in message.upper():
                 self.voters[sender_id] = [message]
                 team_a = self.current_teams["team_a"]
                 team_b = self.current_teams["team_b"]
                 return f"Match en cours. {team_a} VS. {team_b}\\n Vote pour ta troisième ⭐"
         elif len(self.voters[sender_id]) < 4:
-            if message not in players.players and len(self.voters[sender_id]) < 3:
+            message = message.upper()
+            if message not in players.players and len(self.voters[sender_id]) < 4:
                 return "Hummm. ce n'est pas un joueur valide. (ex: 1-BLANC, 1-BLEU, 1-ROUGE, 1-VERT, ...)"
+            if self.current_teams["team_a"] not in message.upper() and self.current_teams["team_b"] not in message.upper():
+                return "Ce joueur ne joue pas ce soir."
             if message in self.voters[sender_id]:
                 return "Vous avez deja voté pour ce joueur"
             replies = self.voters[sender_id]
             positions = ["Vote pour ta deuxième ⭐", "Vote pour ta première ⭐", "Merci!"]
-            self.voters[sender_id].append(message)
+            player = players.players[message]
+            self.voters[sender_id].append(player)
             try:
                 return positions[len(replies)- 2]
             except:

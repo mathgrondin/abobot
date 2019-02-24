@@ -4,7 +4,6 @@ import subprocess
 
 from aiohttp import ClientSession, web, web_runner
 import asyncio
-import bottle
 import requests
 import urllib
 
@@ -25,6 +24,7 @@ class AbobotServer:
         self.port = 0
         self.accountant = Accountant()
         self._proc = None
+        self.restart_web_tunnel_future = None
 
         with open("secrets.json") as data_file:    
             data = json.load(data_file)
@@ -34,7 +34,6 @@ class AbobotServer:
 
         abs_app_dir_path = os.path.dirname(os.path.realpath(__file__))
         abs_views_path = os.path.join(abs_app_dir_path, "views")
-        bottle.TEMPLATE_PATH.insert(0, abs_views_path )
         self._web_runner = web_runner.AppRunner(web.Application())
         self._web_runner.app.add_routes([web.get(f"/", self.newGame),
             web.get("/onStartGame", self.onNewGame),
@@ -48,12 +47,20 @@ class AbobotServer:
             self._proc.kill()
 
     async def runServer(self):
+        await self.startWebhandler()
+        asyncio.ensure_future(self._refreshServer())
+
+    async def startWebhandler(self):
+        if self._proc is not None:
+            await self._web_runner.cleanup()
+            self._proc.kill()
+        
         port, host, proc = startHttpsServerTunnel()
-        self._proc = proc
         # port = 2000
         # host = "localhost"
         self.port = port
         self.host = host
+        self._proc = proc
 
         print(f"###############################################")
         print("Initializing Abobot.")
@@ -64,8 +71,12 @@ class AbobotServer:
         await self._web_runner.setup()
         site = web.TCPSite(self._web_runner, "localhost", self.port)
         await site.start()
-        await asyncio.sleep(5)
         asyncio.ensure_future(self._refreshWebHook())
+
+    async def _refreshServer(self):
+        while True:
+            await asyncio.sleep(7 * 60 * 60)
+            await self.startWebhandler()
 
     async def _refreshWebHook(self, retry: int = 1):
         print(f"Updating webhook (attempt #{retry})...")
@@ -166,7 +177,6 @@ if __name__ == "__main__":
         loop = asyncio.get_event_loop()
         server = AbobotServer()
         loop.run_until_complete(server.runServer())
-        # loop.run_until_complete(server._refreshWebHook())
         loop.run_forever()
     except (KeyboardInterrupt, SystemExit):
         server.__del__()
