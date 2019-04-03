@@ -1,7 +1,9 @@
 import asyncio
+import random
 import time
 import threading
 
+import answers
 import players
 from web_view_helper import getStarPage
 
@@ -35,7 +37,7 @@ class Accountant:
         for voter, votes in self.voters.items():
             for i in [1,2,3]:
                 try:
-                    _players[votes[i]]+=i
+                    _players[votes[i].upper()]+=i
                 except Exception:
                     errors+=1
         
@@ -46,32 +48,44 @@ class Accountant:
 
     def getReply(self, sender_id, message):
         if not self.game_started:
-            if "VOTE" in message.upper():
+            if "vote" in message.lower():
                 return "Aucun match en cours..."
             else:
                 return
+
         if sender_id not in self.voters:
-            if "VOTE" in message.upper():
+            if "vote" in message.lower():
                 self.voters[sender_id] = [message]
-                team_a = self.current_teams["team_a"]
-                team_b = self.current_teams["team_b"]
-                return f"Match en cours. {team_a} VS. {team_b}\\n Vote pour ta troisième ⭐"
+                reply = random.sample(answers.answer_sequence[0],1)[0]
+                return reply
+
         elif len(self.voters[sender_id]) < 4:
-            message = message.upper()
-            if message not in players.players and len(self.voters[sender_id]) < 4:
-                return "Hummm. ce n'est pas un joueur valide. (ex: 1-BLANC, 1-BLEU, 1-ROUGE, 1-VERT, ...)"
-            if self.current_teams["team_a"] not in message.upper() and self.current_teams["team_b"] not in message.upper():
-                return "Ce joueur ne joue pas ce soir."
-            if message in self.voters[sender_id]:
-                return "Vous avez deja voté pour ce joueur"
-            replies = self.voters[sender_id]
-            positions = ["Vote pour ta deuxième ⭐", "Vote pour ta première ⭐", "Merci!"]
-            player = players.players[message]
-            self.voters[sender_id].append(player)
+            message = message.lower()
+            vote = ""
             try:
-                return positions[len(replies)- 2]
+                for player, names in players.players.items():
+                    if message in names:
+                        vote = player
+                        break
             except:
-                return "Une erreur est survenue..."
+                print(f"error with message: {message}")
+                return
+            if vote == "":
+                reply = random.sample(answers.name_error,1)[0] 
+                return reply
+
+            if self.current_teams["team_a"] not in vote.upper() and self.current_teams["team_b"] not in vote.upper():
+                return "Ce joueur ne joue pas ce soir."
+            if vote in self.voters[sender_id]:
+                return "Vous avez deja voté pour ce joueur."
+
+            reply_index = len(self.voters[sender_id])
+            try:
+                reply = random.sample(answers.answer_sequence[reply_index],1)[0]
+                self.voters[sender_id].append(vote)
+                return reply
+            except:
+                return
 
 if __name__ == '__main__':
     import multiprocessing

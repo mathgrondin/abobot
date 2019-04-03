@@ -70,7 +70,7 @@ def POSTMessengerWebhook():
                     print(f"{sender_id} says {text}")
                     reply_message = accountant.getReply(sender_id, text)
                     if reply_message is None:
-                        return "all good"
+                        return "error happened."
                     
                     params = {
                         "messaging_type": "RESPONSE",
