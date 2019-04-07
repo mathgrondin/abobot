@@ -51,6 +51,7 @@ players = {
         'alex sacha',
         'sacha',
         'alexandre-sasha',
+        'alexandre sacha',
         'alex-sasha',
         'alex sasha',
         'sasha',
@@ -176,6 +177,7 @@ players = {
         'mathieug-t',
         'mathieugt',
         'math garceau',
+        'mat garceau',
         'mathieu garceau-t',
         'mathieu garceau-tremblay',
         'matt garceau',
@@ -184,6 +186,8 @@ players = {
         'mathieu tremblay',
         'mathieu garceau',
         'matt g-t',
+        'mat g-t',
+        'mat gt'
         'g-t',
         'gt',
         'mathieu rouges',
@@ -580,6 +584,7 @@ players = {
         '5 blue',
         '5blue',
         'simonc',
+        'simon c',
         'simon courchesne',
         'simon courchene',
         'simoncourchesne',
@@ -756,6 +761,8 @@ players = {
         'sam fleury',
         'sam fleu',
         'sam puff',
+        'sam pof',
+        'sam poff',
         'fleury',
         'puff',
         'poff',
@@ -838,6 +845,7 @@ players = {
         'marc andre blanc ',
         'marc andre blancs'
     ],
+
     "6-blanc": [
         'w6',
         '6w',
@@ -856,6 +864,7 @@ players = {
         '6 white',
         '6white',
     ],
+
     "7-blanc": [
         'w7',
         '7w',
@@ -874,10 +883,10 @@ players = {
         '7 white',
         '7white',
         'alexm',
-        'alex',
+        'alex m',
         'alex martin',
         'alexmartin',
-        'alexandre ',
+        'alexandre m',
         'alexandre martin',
         'martin',
         'le costaud',
@@ -891,7 +900,8 @@ players = {
 
 
 
-score = {
+def score():
+    return {
     "1-BLANC": 0,
     "2-BLANC": 0,
     "3-BLANC": 0,

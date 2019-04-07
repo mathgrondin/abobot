@@ -32,7 +32,8 @@ class Accountant:
         team_b = self.current_teams["team_b"]
 
         errors = 0
-        _players = players.score    
+        _players = players.score()
+        num_of_votes = len(self.voters)
         stars = {1:"", 2:"", 3:""}
         for voter, votes in self.voters.items():
             for i in [1,2,3]:
@@ -41,10 +42,10 @@ class Accountant:
                 except Exception:
                     errors+=1
         
-        result = dict(sorted(_players.items(), key=lambda x: x[1]))
+        result = dict(sorted(_players.items(), key=lambda x: x[1], reverse=True))
         print(f"error count: {errors}")
         self.voters = {}
-        return getStarPage(result)
+        return getStarPage(result, num_of_votes)
 
     def getReply(self, sender_id, message):
         if not self.game_started:
@@ -56,10 +57,12 @@ class Accountant:
         if sender_id not in self.voters:
             if "vote" in message.lower():
                 self.voters[sender_id] = [message]
-                reply = random.sample(answers.answer_sequence[0],1)[0]
+                reply = random.choice(answers.answer_sequence[0])
                 return reply
+            return
 
-        elif len(self.voters[sender_id]) < 4:
+        index = len(self.voters[sender_id]) 
+        if index < 4:
             message = message.lower()
             vote = ""
             try:
@@ -71,17 +74,17 @@ class Accountant:
                 print(f"error with message: {message}")
                 return
             if vote == "":
-                reply = random.sample(answers.name_error,1)[0] 
+                reply = random.choice(answers.name_error)
                 return reply
 
             if self.current_teams["team_a"] not in vote.upper() and self.current_teams["team_b"] not in vote.upper():
                 return "Ce joueur ne joue pas ce soir."
+            
             if vote in self.voters[sender_id]:
                 return "Vous avez deja voté pour ce joueur."
 
-            reply_index = len(self.voters[sender_id])
             try:
-                reply = random.sample(answers.answer_sequence[reply_index],1)[0]
+                reply = random.choice(answers.answer_sequence[index])
                 self.voters[sender_id].append(vote)
                 return reply
             except:

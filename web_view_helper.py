@@ -14,7 +14,7 @@ def getGameStartedPage(teams):
         f"  </body>"\
         f"</html>"\
 
-def getStarPage(players):
+def getStarPage(players, num_of_votes):
     html_table = "" 
     for player, points in players.items():
         html_table+= f"          <tr>"\
@@ -24,6 +24,7 @@ def getStarPage(players):
 
     return f"<html>"\
         f"  <body>"\
+        f"    Nombre de voteurs: {num_of_votes}"\
         f"      <table>"\
         f"          <tr>"\
         f"              <td>Joueur</td>"\
@@ -32,4 +33,4 @@ def getStarPage(players):
         f"          {html_table}"\
         f"      </table>"\
         f"  </body>"\
-        f"</html>"\
+        f"</html>"
