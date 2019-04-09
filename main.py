@@ -81,13 +81,13 @@ def POSTMessengerWebhook():
                     response = requests.post("https://graph.facebook.com/v3.2/me/messages", params=params)
                     print(response)
     except Exception as e:
-        params = {
-            "messaging_type": "RESPONSE",
-            "recipient": f"{{\"id\": \"{sender_id}\"}}",
-            "message": f"{{\n\"text\": \"Une erreur est survenue...\"}}",
-            "access_token": access_token
-        }
-        response = requests.post("https://graph.facebook.com/v3.2/me/messages", params=params)
+        # params = {
+        #     "messaging_type": "RESPONSE",
+        #     "recipient": f"{{\"id\": \"{sender_id}\"}}",
+        #     "message": f"{{\n\"text\": \"Une erreur est survenue...\"}}",
+        #     "access_token": access_token
+        # }
+        # response = requests.post("https://graph.facebook.com/v3.2/me/messages", params=params)
         print(e)
     return "all good"
 
