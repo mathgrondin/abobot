@@ -89,7 +89,7 @@ name_error = [
         'Je n\'ai pas été capable de comptabiliser ton vote... Peux-tu vérifier que c\'est bien écrit et me le réécrire s\'il te plait? (Tu peux aussi voter avec le numéro et la couleur du chandail si t\'est pas sûr)',
         'Hmmmm... Pourrais-tu vérifier l\'orthographe et essayer à nouveau, s\'il te plait? (Tu peux aussi voter avec le numéro et la couleur du chandail)',
         'Hmmm, pas de chance, je n\'ai rien trouvé avec cet orthographe-là... Peux-tu réessayer en étant plus précis s\'il te plait?',
-        'Woup, ça ne semble pas être bien écrit... Peux-tu essayer de l\'écrire différemment? (Tu peux aussi voter avec le numéro et la couleur du chandail, si t\'es pas sûr)'
+        'Woup, ça ne semble pas être bien écrit... Peux-tu essayer de l\'écrire différemment? (Tu peux aussi voter avec le numéro et la couleur du chandail, si t\'es pas sûr)',
         'Hmmm... Je ne reconnais pas ce que tu as écrit. Peut-être pourrais-tu vérifier l\'orthographe s\'il te plait?',
         'Oh flûte, je n\'ai pas saisi pour qui tu voulais voter... Peux-tu essayer en changeant l\'orthographe? (Tu peux aussi voter avec le numéro et la couleur du chandail si t\'est pas sûr!)'
 ]
