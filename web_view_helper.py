@@ -50,7 +50,7 @@ def getAutoRefreshStarPage(players, num_of_votes, errors):
     return f"<html>"\
         f"<script>" \
         f"  setTimeout(function(){{" \
-        f"      window.location.href = 'https://serene-foundry-234719.appspot.com/getCurrentScores';" \
+        f"      window.location.href = 'https://abobot.aboimpro.com/getCurrentScores';" \
         f"  }}, 5000);" \
         f"</script>" \
         f"  <body>"\

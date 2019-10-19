@@ -73,7 +73,7 @@ def GETMessengerWebhook():
 
 @app.route('/messengerWebHook', methods=['POST'])
 def POSTMessengerWebhook():
-    print("Message received")
+    print("Message received, test")
     try:
         notification = request.get_json()
         for entry in notification["entry"]:
@@ -108,4 +108,4 @@ def POSTMessengerWebhook():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
