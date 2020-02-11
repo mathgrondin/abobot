@@ -1,21 +1,48 @@
 <html>
-    <body>
-        <form action="onStartGame">
-            <br>
-                <input type="radio" name="team_a" value="BLANC"> BLANCS
-                <input type="radio" name="team_a" value="BLEU"> BLEUS
-                <input type="radio" name="team_a" value="ROUGE"> ROUGES
-                <input type="radio" name="team_a" value="VERT"> VERTS
-            </br>
-            VS
-            <br>
-                <input type="radio" name="team_b" value="BLANC"> BLANCS
-                <input type="radio" name="team_b" value="BLEU"> BLEUS
-                <input type="radio" name="team_b" value="ROUGE"> ROUGES
-                <input type="radio" name="team_b" value="VERT"> VERTS
-            </br>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/new_game.css') }}">
+    <body class='main'>
+        <h1>ABOBOT</h1>
+        <h2>Sélectionne les équipes pour le match</h2>
+        <form action="onStartGame" class="team-chooser">
+            <div class='team-row'>
+                <label>
+                    <input type="radio" name="team_a" value="VERT" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/vert.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_a" value="ROUGE" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/rouge.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_a" value="BLEU" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/bleu.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_a" value="BLANC" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/blanc.png')}}">
+                </label>
+            </div>
+            <h2>VS</h2>
+            <div class='team-row'>
+                <label>
+                    <input type="radio" name="team_b" value="VERT" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/vert.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_b" value="ROUGE" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/rouge.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_b" value="BLEU" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/bleu.png')}}">
+                </label>
+                <label>
+                    <input type="radio" name="team_b" value="BLANC" checked>
+                    <img class='team' src="{{ url_for('static', filename='assets/blanc.png')}}">
+                </label>
+            </div>
             <div>
-                <button>Start game</button>
+                <button class='start-button'>Start game</button>
             </div>
         </form>
     </body>
