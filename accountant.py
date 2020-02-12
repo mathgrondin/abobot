@@ -5,7 +5,6 @@ import threading
 
 import answers
 import players
-from web_view_helper import getStarPage
 
 
 class Accountant:
@@ -38,7 +37,7 @@ class Accountant:
         num_of_votes = len(self.voters)
         stars = {1: "", 2: "", 3: ""}
         for voter, votes in self.voters.items():
-            for i in [1, 3, 5]:
+            for i in [1, 2, 3]:
                 try:
                     _players[votes[i].upper()] += i
                 except Exception:

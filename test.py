@@ -1,7 +1,7 @@
+from flask import Flask, render_template, request
 import accountant
 import new_game
-
-from flask import Flask, render_template, request
+from web_view_helper import getGameStartedPage, getStarTable
 
 app = Flask(__name__)
 a = accountant.Accountant()
@@ -32,20 +32,27 @@ def main(message: str = ""):
 
 @app.route('/onStopGame')
 def onStopGame():
-    return a.stopGame()
+    a.stopGame()
+    return main()
 
 @app.route('/onStartGame')
 def onStartGame():
-    team_a = request.args.get("team_a","")
-    team_b = request.args.get("team_b","")
-    a.startGame(team_a,team_b)
+    team_a = request.args.get("team_a", "")
+    team_b = request.args.get("team_b", "")
+    a.startGame(team_a, team_b)
     return main()
 
 @app.route('/onGetReply')
 def onGetReply():
     message = request.args.get("message","")
     reply = a.getReply("test_user", message)
-    return main(reply)
+    scores, num_of_votes, errors = a.getScores()
+    star_page = getStarTable(scores, num_of_votes, errors)
+    result = f"<p>"\
+        f" {reply}"\
+        f"</p>"\
+        f"{star_page}"
+    return main(result)
 
 if __name__ == '__main__':
     app.run()

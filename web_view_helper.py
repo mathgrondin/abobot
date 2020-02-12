@@ -17,7 +17,7 @@ def getGameStartedPage(teams):
 
 
 
-def getStarPage(players, num_of_votes, errors):
+def getStarTable(players, num_of_votes, errors):
     html_table = ""
     for player, points in players.items():
         html_table += f"          <tr>"\
@@ -25,8 +25,7 @@ def getStarPage(players, num_of_votes, errors):
             f"              <td>{points}</td>"\
             f"          </tr>"\
 
-    return f"<html>"\
-        f"  <body>"\
+    return f"  <div>"\
         f"    Nombre de voteurs: {num_of_votes}"\
         f"      <table>"\
         f"          <tr>"\
@@ -35,8 +34,7 @@ def getStarPage(players, num_of_votes, errors):
         f"          </tr>"\
         f"          {html_table}"\
         f"      </table>"\
-        f"  </body>"\
-        f"</html>"
+        f"  </div>"
 
 
 def getAutoRefreshStarPage(players, num_of_votes, errors):

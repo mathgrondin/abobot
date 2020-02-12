@@ -11,4 +11,5 @@ COPY . /app
 EXPOSE 80
 EXPOSE 8080
 
+RUN chmod 644 main.py
 CMD ["python", "main.py"]
