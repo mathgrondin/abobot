@@ -15,7 +15,8 @@ class Accountant:
         self.voters = {}
 
     def startGame(self, team_a: str, team_b: str):
-        if team_a not in self._teams or team_b not in self._teams or team_a == team_b:
+        if team_a not in self._teams or \
+             team_b not in self._teams or team_a == team_b:
             return
 
         self.current_teams = {"team_a": team_a,
@@ -46,6 +47,10 @@ class Accountant:
         scores = dict(
             sorted(_players.items(), key=lambda x: x[1], reverse=True))
 
+        # Add display name
+        for player, score in scores.items():
+            scores[player] = players.displayName(player) + ' ' + f"{score}"
+
         return scores, num_of_votes, errors
 
     def getReply(self, sender_id, message):
@@ -71,14 +76,15 @@ class Accountant:
                     if message in names:
                         vote = player
                         break
-            except:
+            except Exception:
                 print(f"error with message: {message}")
                 return
             if vote == "":
                 reply = random.choice(answers.name_error)
                 return reply
 
-            if self.current_teams["team_a"] not in vote.upper() and self.current_teams["team_b"] not in vote.upper():
+            if self.current_teams["team_a"] not in vote.upper() and \
+                 self.current_teams["team_b"] not in vote.upper():
                 return "Ce joueur ne joue pas ce soir."
 
             if vote in self.voters[sender_id]:
@@ -88,7 +94,7 @@ class Accountant:
                 reply = random.choice(answers.answer_sequence[index])
                 self.voters[sender_id].append(vote)
                 return reply
-            except:
+            except Exception:
                 return
 
 
@@ -102,4 +108,3 @@ if __name__ == '__main__':
     while True:
         message = input('Vote : ')
         print(accountant.getReply(1, message))
-
