@@ -36,7 +36,6 @@ class Accountant:
         errors = 0
         _players = players.score()
         num_of_votes = len(self.voters)
-        stars = {1: "", 2: "", 3: ""}
         for voter, votes in self.voters.items():
             for i in [1, 2, 3]:
                 try:
@@ -87,7 +86,7 @@ class Accountant:
                 return reply
 
             if self.current_teams["team_a"] not in vote.upper() and \
-                 self.current_teams["team_b"] not in vote.upper():
+               self.current_teams["team_b"] not in vote.upper():
                 return "Ce joueur ne joue pas ce soir."
 
             if vote in self.voters[sender_id]:

@@ -39,7 +39,7 @@ def getStarTable(players, num_of_votes, errors):
         f"  </div>"
 
 
-def getStarPage(scores):
+def starPage(scores):
     podium = {}
     firstValue = 0
     secondValue = 0
