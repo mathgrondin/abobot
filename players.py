@@ -1087,7 +1087,7 @@ def displayName(player):
         "3-VERT": 'jean-gabriel morin',
         "4-VERT": 'simon turbo turcotte',
         "5-VERT": 'étienne desbiens',
-        "6-VERT": 'raphaël poggetti bernardi',
+        "6-VERT": 'rafaël poggetti bernardi',
         "7-VERT": '',
         "9-VERT": 'jean-françois mailhot'
     }

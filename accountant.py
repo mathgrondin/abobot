@@ -49,7 +49,10 @@ class Accountant:
 
         # Add display name
         for player, score in scores.items():
-            scores[player] = players.displayName(player) + ' ' + f"{score}"
+            scores[player] = {
+                'displayName': players.displayName(player),
+                'score': score
+            }
 
         return scores, num_of_votes, errors
 

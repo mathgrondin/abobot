@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    setTimeout(function() {
+      {
+        window.location.href = "/getStarPage";
+      }
+    }, 5000);
+  </script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Pacifico|Sarala&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',filename='styles/star_page.css') }}"
+    />
+    <title>Document</title>
+  </head>
+  <body class="results">
+    <form action="onStopGame">
+      <button>Stop Game</button>
+    </form>
+
+    <h1 class="title">ÉTOILES</h1>
+
+    <div class="starPlayer">
+      <div class="star">
+        <svg
+          width="5rem"
+          height="5rem"
+          viewBox="0 0 160 152"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M79.536 121.451L128.689 151.118L115.645 95.2046L159.072 57.584L101.886 52.7324L79.536 0L57.1864 52.7324L0 57.584L43.4266 95.2046L30.3827 151.118L79.536 121.451Z"
+            fill="#FFDE69"
+          />
+        </svg>
+        <h1 class="position">1</h1>
+      </div>
+      <div class="playerList">
+        {% for player in first %}
+        <div class="playerCard">
+          <div class="playerNumber {{player.team}}">
+            <h1>#{{player.number}}</h1>
+          </div>
+          <p>{{player.name}} : {{player.score}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="starPlayer">
+      <div class="star">
+        <svg
+          width="5rem"
+          height="5rem"
+          viewBox="0 0 160 152"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M79.536 121.451L128.689 151.118L115.645 95.2046L159.072 57.584L101.886 52.7324L79.536 0L57.1864 52.7324L0 57.584L43.4266 95.2046L30.3827 151.118L79.536 121.451Z"
+            fill="#CACACA"
+          />
+        </svg>
+        <h1 class="position">2</h1>
+      </div>
+      <div class="playerList">
+        {% for player in second %}
+        <div class="playerCard">
+          <div class="playerNumber {{player.team}}">
+            <h1>#{{player.number}}</h1>
+          </div>
+          <p>{{player.name}} : {{player.score}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="starPlayer">
+      <div class="star">
+        <svg
+          width="5rem"
+          height="5rem"
+          viewBox="0 0 160 152"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M79.536 121.451L128.689 151.118L115.645 95.2046L159.072 57.584L101.886 52.7324L79.536 0L57.1864 52.7324L0 57.584L43.4266 95.2046L30.3827 151.118L79.536 121.451Z"
+            fill="#E88B00"
+          />
+        </svg>
+        <h1 class="position">3</h1>
+      </div>
+      <div class="playerList">
+        {% for player in third %}
+        <div class="playerCard">
+          <div class="playerNumber {{player.team}}">
+            <h1>#{{player.number}}</h1>
+          </div>
+          <p>{{player.name}} : {{player.score}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

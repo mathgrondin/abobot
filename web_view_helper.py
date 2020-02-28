@@ -1,5 +1,7 @@
 import json
 
+from flask import render_template
+
 
 def getGameStartedPage(teams):
     team_a = teams["team_a"]
@@ -35,6 +37,36 @@ def getStarTable(players, num_of_votes, errors):
         f"          {html_table}"\
         f"      </table>"\
         f"  </div>"
+
+
+def getStarPage(scores):
+    podium = {}
+    firstValue = 0
+    secondValue = 0
+    thirdValue = 0
+    for player, result in scores.items():
+        if not result['score']:
+            continue
+        current = podium.get(result['score'], [])
+        current.append({
+            'number': player[0],
+            'name': result['displayName'],
+            'team': player[2:],
+            'score': result['score']
+            }
+        )
+        podium[result['score']] = current
+        if result['score'] > firstValue:
+            firstValue = result['score']
+        elif result['score'] > secondValue:
+            secondValue = result['score']
+        elif result['score'] > thirdValue:
+            thirdValue = result['score']
+
+    first = podium.get(firstValue, [])
+    second = podium.get(secondValue, [])
+    third = podium.get(thirdValue, [])
+    return render_template("star_page.html", first=first, second=second, third=third)
 
 
 def getAutoRefreshStarPage(players, num_of_votes, errors):

@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 
 from accountant import Accountant
 from dynamic_server import startHttpsServerTunnel
-from web_view_helper import getGameStartedPage, getAutoRefreshStarPage
+from web_view_helper import getGameStartedPage, getAutoRefreshStarPage, getStarPage
 
 accountant = Accountant()
 verify_token = ""
@@ -23,9 +23,7 @@ app = Flask(__name__)
 @app.route('/')
 def newGame():
     if accountant.game_started:
-        # pending_game_page = getGameStartedPage(accountant.current_teams)
-        # return pending_game_page
-        return getCurrentResults()
+        return getStarPage()
     return render_template("new_game.html")
 
 
@@ -53,6 +51,13 @@ def onStopGame():
 def getCurrentResults():
     scores, num_of_votes, errors = accountant.getScores()
     star_page = getAutoRefreshStarPage(scores, num_of_votes, errors)
+    return star_page
+
+
+@app.route('/getStarPage', methods=['GET'])
+def getStarPage():
+    scores, num_of_votes, errors = accountant.getScores()
+    star_page = getStarPage(scores)
     return star_page
 
 
