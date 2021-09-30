@@ -11,7 +11,7 @@ max_port = 60000
 def startHttpsServerTunnel(retry: int = 1):
     https_tunnel_process = None
     port, ngrok_api_port = _getDynamicPort()
-    if port is not 0:
+    if port != 0:
         try:
             https_tunnel_process = subprocess.Popen(["ngrok", "http", f"{port}"], stdout=subprocess.PIPE)
             public_address = _getHttpsAddress(ngrok_api_port, port)

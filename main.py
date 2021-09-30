@@ -100,6 +100,8 @@ def POSTMessengerWebhook():
                     response = requests.post(
                         "https://graph.facebook.com/v3.2/me/messages", params=params)
                     print(response)
+                    print(response.reason)
+                    print(response.text)
     except Exception as e:
         # params = {
         #     "messaging_type": "RESPONSE",
