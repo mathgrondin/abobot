@@ -12,10 +12,15 @@ verify_token = ""
 app_access_token = ""
 
 with open("secrets.json") as data_file:
-    data = json.load(data_file)
-    access_token = data["access_token"]
-    verify_token = data["verify_token"]
-    app_access_token = data["app_access_token"]
+    try:
+        data = json.load(data_file)
+        access_token = data["access_token"]
+        verify_token = data["verify_token"]
+        app_access_token = data["app_access_token"]
+    except Exception as e:
+        print("error")
+        print(e)
+
 
 app = Flask(__name__)
 
