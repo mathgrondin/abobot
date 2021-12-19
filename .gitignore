@@ -1,7 +1,0 @@
-secrets.json
-__pycache__/
-.vscode/launch.json
-.vscode/settings.json
-env/*
-.next/*
-.env.local
