@@ -1,4 +1,5 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import { reduceEachTrailingCommentRange } from 'typescript';
 
 const messengerWebhook: NextApiHandler = async (request, response) => {
   switch (request.method) {
@@ -20,8 +21,8 @@ function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) 
       if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
         console.log('WEBHOOK_VERIFIED');
         const challenge = request.query['hub.challenge'];
-        response.status(200).send(challenge);
-
+        response.status(200).json(challenge);
+        return;
       }
     }
     console.log('messengerWebhook', query)
