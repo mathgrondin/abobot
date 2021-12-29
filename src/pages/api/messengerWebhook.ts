@@ -1,5 +1,5 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-import { reduceEachTrailingCommentRange } from 'typescript';
+import store from '../../app/store';
 
 const messengerWebhook: NextApiHandler = async (request, response) => {
   switch (request.method) {
@@ -33,6 +33,7 @@ function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) 
 
 function handleMessengerPost(request: NextApiRequest, response: NextApiResponse) {
   console.log('New message received', JSON.parse(request.body))
+  const { dispatch } = store;
   response.send('ok')
 }
 export default messengerWebhook
