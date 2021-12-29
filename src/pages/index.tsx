@@ -1,63 +1,45 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-
-import Counter from '../features/counter/Counter'
 import styles from '../styles/Home.module.css'
+import type { NextPage } from 'next'
+import { useEffect, useState } from 'react';
+import useSWR, { SWRConfig } from 'swr'
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
+const API = "http://localhost:3000/api/getMessages";
 
 const IndexPage: NextPage = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const { data } = useSWR(API, fetcher, { refreshInterval: 10 });
+
+  useEffect(() => {
+    if (!data) {
+      setLoading(true)
+    } else {
+      setLoading(false)
+    }
+  }, [loading, data])
+
+  const Messages = () => {
+    return (
+      <div>
+        {data?.messages.map((message, i) => <p key={message + i}>{message}</p>)}
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Redux Toolkit</title>
+        <title>Abobot</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className={styles.header}>
-        <img src="/logo.svg" className={styles.logo} alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className={styles.link}
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className={styles.link}
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <div>
+        <h1>messages</h1>
+        {loading ? <p>loading</p> : <Messages />}
+      </div>
     </div>
   )
 }
 
-export default IndexPage
+export default IndexPage;
