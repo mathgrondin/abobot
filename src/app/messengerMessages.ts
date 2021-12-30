@@ -32,12 +32,15 @@ export const getMessages = async (matchId?: string): Promise<string[]> => {
         });
         return messages;
       } catch (error) {
-        return [(error as Error).message]
+        console.error(error)
+        const message = error.message ?? 'unknown'
+        return [message]
       }
     })
     .catch((error) => {
       console.error('error', error)
-      return [(error as Error).message]
+      const message = error.message ?? 'unknown'
+      return [message]
     })
 };
 
