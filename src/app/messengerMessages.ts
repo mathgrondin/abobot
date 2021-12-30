@@ -10,12 +10,15 @@ export type Message = {
 const COLLECTION_KEY = 'matchs';
 
 export const getMessages = async (matchId?: string): Promise<string[]> => {
+  console.log('getMessages')
   return Promise.resolve()
     .then(() => getDocs(collection(db, COLLECTION_KEY)))
     .then((querySnapshot) => {
+      console.log('got querySnapshot')
       try {
         const messages = []
         querySnapshot?.forEach((doc) => {
+          console.log('doc id')
           const currentMatchId = doc.id;
           if (currentMatchId === matchId || !matchId) {
             const matchData = doc.data();
