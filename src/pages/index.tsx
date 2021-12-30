@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import useSWR, { SWRConfig } from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-const API = "http://localhost:3000/api/getMessages";
+const API = "http://localhost:3000/api/getMessages?matchId=1640194878059";
 
 const IndexPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
