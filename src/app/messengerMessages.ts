@@ -13,27 +13,31 @@ export const getMessages = async (matchId?: string): Promise<string[]> => {
   return Promise.resolve()
     .then(() => getDocs(collection(db, COLLECTION_KEY)))
     .then((querySnapshot) => {
-      const messages = []
-      querySnapshot?.forEach((doc) => {
-        const currentMatchId = doc.id;
-        if (currentMatchId === matchId || !matchId) {
-          const matchData = doc.data();
-          const { messages: matchMessages = [] } = matchData;
-          Object.values(matchMessages).forEach((messagesByUser: string[]) => {
-            if (Array.isArray(messagesByUser)) {
-              messagesByUser.forEach(m => messages.push(m))
-            }
-            if (typeof messagesByUser === 'string') {
-              messages.push(messagesByUser)
-            }
-          })
-        }
-      });
-      return messages;
+      try {
+        const messages = []
+        querySnapshot?.forEach((doc) => {
+          const currentMatchId = doc.id;
+          if (currentMatchId === matchId || !matchId) {
+            const matchData = doc.data();
+            const { messages: matchMessages = [] } = matchData;
+            Object.values(matchMessages).forEach((messagesByUser: string[]) => {
+              if (Array.isArray(messagesByUser)) {
+                messagesByUser.forEach(m => messages.push(m))
+              }
+              if (typeof messagesByUser === 'string') {
+                messages.push(messagesByUser)
+              }
+            })
+          }
+        });
+        return messages;
+      } catch (error) {
+        return [(error as Error).message]
+      }
     })
     .catch((error) => {
       console.error('error', error)
-      return [];
+      return [(error as Error).message]
     })
 };
 
