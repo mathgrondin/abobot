@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
 
 export type Message = {
@@ -19,7 +19,6 @@ export const getMessages = async (matchId?: string): Promise<string[]> => {
         if (currentMatchId === matchId || !matchId) {
           const matchData = doc.data();
           const { messages: matchMessages = [] } = matchData;
-          console.log('currentMatchId', currentMatchId, matchMessages);
           Object.values(matchMessages).forEach((messagesByUser: string[]) => {
             if (Array.isArray(messagesByUser)) {
               messagesByUser.forEach(m => messages.push(m))
@@ -33,21 +32,20 @@ export const getMessages = async (matchId?: string): Promise<string[]> => {
       return messages;
     })
     .catch((error) => {
-      console.log('error', error)
+      console.error('error', error)
       return [];
     })
 };
 
 export const setMessage = async ({ matchId, senderId, body }: Message): Promise<boolean> => {
   return Promise.resolve()
-    .then(() => {
-      const matchRef = doc(db, COLLECTION_KEY, matchId);
+    .then(() => doc(db, COLLECTION_KEY, matchId))
+    .then(async (matchRef) => {
       if (matchRef) {
-        setDoc(matchRef, {
-          messages: {
-            [senderId]: body
-          }
-        }, { merge: true });
+        await updateDoc(matchRef, {
+          ['messages.' + senderId]: arrayUnion(body)
+        });
+        return true;
       }
       return false;
     })
