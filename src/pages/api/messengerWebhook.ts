@@ -31,11 +31,16 @@ function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) 
 
 function handleMessengerPost(request: NextApiRequest, response: NextApiResponse) {
   const { object, entry } = request?.body;
+  console.log('handleMessengerPost', object, entry)
   if (object === 'page' && Array.isArray(entry)) {
+    console.log('object page and entry is array')
     const { messaging = undefined } = entry.find((value) => !!value.messaging && !!value.messaging[0].message);
     if (messaging) {
+      console.log('got messaging', JSON.stringify(messaging))
       const { message = undefined, sender = {} } = messaging[0];
       if (message) {
+        console.log('got message', JSON.stringify(sender))
+        console.log('got message', JSON.stringify(message))
         const { id = undefined } = sender;
         const { text = undefined } = message;
         setMessage({
@@ -44,8 +49,8 @@ function handleMessengerPost(request: NextApiRequest, response: NextApiResponse)
           body: text
         })
         response.status(200).send('all good');
+        return;
       }
-      return;
     }
   }
   response.status(404).send('not found');
