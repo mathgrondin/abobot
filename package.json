@@ -3,7 +3,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "start": "next start",
     "test": "jest",
     "type-check": "tsc"
