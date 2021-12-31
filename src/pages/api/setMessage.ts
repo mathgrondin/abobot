@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next";
-import { getMessages, Message, setMessage } from "../../app/messengerMessages";
+import { Message, setMessage } from "../../app/messengerMessages";
 
 const setMessagesAPI: NextApiHandler = async (request, response) => {
   const successful = await setMessage(request.query as Message);
@@ -8,6 +8,6 @@ const setMessagesAPI: NextApiHandler = async (request, response) => {
   } else {
     response.status(400).json('failed');
   }
-}
+};
 
 export default setMessagesAPI;

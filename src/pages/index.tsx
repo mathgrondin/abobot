@@ -1,8 +1,8 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import type { NextPage } from 'next'
-import { useEffect, useState } from 'react';
-import useSWR, { SWRConfig } from 'swr'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import type { NextPage } from 'next';
+import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const environment = process.env.NODE_ENV || 'development';
@@ -16,19 +16,19 @@ const IndexPage: NextPage = () => {
 
   useEffect(() => {
     if (!data) {
-      setLoading(true)
+      setLoading(true);
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [loading, data])
+  }, [loading, data]);
 
   const Messages = () => {
     return (
       <div>
         {data?.messages.map((message, i) => <p key={message + i}>{message}</p>)}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -41,7 +41,7 @@ const IndexPage: NextPage = () => {
         {loading ? <p>loading</p> : <Messages />}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default IndexPage;
