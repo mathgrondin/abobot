@@ -3,6 +3,10 @@ import { setMessage } from '../../app/messengerMessages';
 import store from '../../app/store';
 
 const messengerWebhook: NextApiHandler = async (request, response) => {
+  console.log('messengerWebhook', request.method, {
+    query: JSON.stringify(request.query),
+    body: JSON.stringify(request.body)
+  })
   switch (request.method) {
     case 'POST': return handleMessengerPost(request, response)
     case 'GET':
@@ -13,11 +17,10 @@ const messengerWebhook: NextApiHandler = async (request, response) => {
 
 function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) {
   const { query } = request;
-  const { hub } = query;
   if (query) {
     // Parse the query params
-    const mode = request.query['hub.mode'];
-    const token = request.query['hub.verify_token'];
+    const mode = query['hub.mode'];
+    const token = query['hub.verify_token'];
     if (mode && token) {
       if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
         const challenge = request.query['hub.challenge'];
