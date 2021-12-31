@@ -1,19 +1,18 @@
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { setMessage } from '../../app/messengerMessages';
-import store from '../../app/store';
 
 const messengerWebhook: NextApiHandler = async (request, response) => {
   console.log('messengerWebhook', request.method, {
     query: JSON.stringify(request.query),
     body: JSON.stringify(request.body)
-  })
+  });
   switch (request.method) {
-    case 'POST': return handleMessengerPost(request, response)
+    case 'POST': return handleMessengerPost(request, response);
     case 'GET':
     default:
-      return handleMessengerGet(request, response)
+      return handleMessengerGet(request, response);
   }
-}
+};
 
 function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) {
   const { query } = request;
@@ -34,23 +33,23 @@ function handleMessengerGet(request: NextApiRequest, response: NextApiResponse) 
 
 function handleMessengerPost(request: NextApiRequest, response: NextApiResponse) {
   const { object, entry } = request?.body;
-  console.log('handleMessengerPost', object, entry)
+  console.log('handleMessengerPost', object, entry);
   if (object === 'page' && Array.isArray(entry)) {
-    console.log('object page and entry is array')
+    console.log('object page and entry is array');
     const { messaging = undefined } = entry.find((value) => !!value.messaging && !!value.messaging[0].message);
     if (messaging) {
-      console.log('got messaging', JSON.stringify(messaging))
+      console.log('got messaging', JSON.stringify(messaging));
       const { message = undefined, sender = {} } = messaging[0];
       if (message) {
-        console.log('got message', JSON.stringify(sender))
-        console.log('got message', JSON.stringify(message))
+        console.log('got message', JSON.stringify(sender));
+        console.log('got message', JSON.stringify(message));
         const { id = undefined } = sender;
         const { text = undefined } = message;
         setMessage({
           matchId: '1640194878059',
           senderId: id,
           body: text
-        })
+        });
         response.status(200).send('all good');
         return;
       }
@@ -58,4 +57,4 @@ function handleMessengerPost(request: NextApiRequest, response: NextApiResponse)
   }
   response.status(404).send('not found');
 }
-export default messengerWebhook
+export default messengerWebhook;
