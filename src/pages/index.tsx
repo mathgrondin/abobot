@@ -3,11 +3,11 @@ import styles from '../styles/Home.module.css';
 import type { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import useSWR from 'swr';
+import { CreateMatch } from '../components/CreateMatch';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const environment = process.env.NODE_ENV || 'development';
-const API = (environment === 'development' ? 'http://localhost:3000' : '') + "/api/getMessages";
-console.log('API', API);
+const API = (environment === 'development' ? 'http://localhost:3000' : '') + "/api/getMatchs";
 
 const IndexPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -22,10 +22,10 @@ const IndexPage: NextPage = () => {
     }
   }, [loading, data]);
 
-  const Messages = () => {
+  const Matches = () => {
     return (
       <div>
-        {data?.messages.map((message, i) => <p key={message + i}>{message}</p>)}
+        {data?.matchIds.map((matchId, i) => <p key={matchId + i}>{matchId}</p>)}
       </div>
     );
   };
@@ -33,12 +33,13 @@ const IndexPage: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Abobot</title>
+        <title>Abbot</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <h1>messages</h1>
-        {loading ? <p>loading</p> : <Messages />}
+        <h1>matches</h1>
+        <CreateMatch/>
+        {loading ? <p>loading</p> : <Matches />}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "semi": ["error", "always"],
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off"
   }

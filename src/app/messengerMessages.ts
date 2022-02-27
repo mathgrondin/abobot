@@ -1,5 +1,6 @@
-import { addDoc, arrayUnion, collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
+import { readCollection } from "./firestoreHelper";
 
 export type Message = {
   senderId: string,
@@ -10,41 +11,38 @@ export type Message = {
 const COLLECTION_KEY = 'matchs';
 
 export const getMessages = async (matchId?: string): Promise<string[]> => {
-  console.log('getMessages')
   return Promise.resolve()
-    .then(() => getDocs(collection(db, COLLECTION_KEY)))
+    .then(() => readCollection(COLLECTION_KEY))
     .then((querySnapshot) => {
-      console.log('got querySnapshot')
       try {
-        const messages = []
+        const messages = [];
         querySnapshot?.forEach((doc) => {
-          console.log('doc id')
           const currentMatchId = doc.id;
           if (currentMatchId === matchId || !matchId) {
             const matchData = doc.data();
             const { messages: matchMessages = [] } = matchData;
             Object.values(matchMessages).forEach((messagesByUser: string[]) => {
               if (Array.isArray(messagesByUser)) {
-                messagesByUser.forEach(m => messages.push(m))
+                messagesByUser.forEach(m => messages.push(m));
               }
               if (typeof messagesByUser === 'string') {
-                messages.push(messagesByUser)
+                messages.push(messagesByUser);
               }
-            })
+            });
           }
         });
         return messages;
       } catch (error) {
-        console.error(error)
-        const message = error.message ?? 'unknown'
-        return [message]
+        console.error(error);
+        const message = error.message ?? 'unknown';
+        return [message];
       }
     })
     .catch((error) => {
-      console.error('error', error)
-      const message = error.message ?? 'unknown'
-      return [message]
-    })
+      console.error('error', error);
+      const message = error.message ?? 'unknown';
+      return [message];
+    });
 };
 
 export const setMessage = async ({ matchId, senderId, body }: Message): Promise<boolean> => {
@@ -58,5 +56,5 @@ export const setMessage = async ({ matchId, senderId, body }: Message): Promise<
         return true;
       }
       return false;
-    })
+    });
 };
