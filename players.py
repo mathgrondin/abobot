@@ -262,3 +262,69 @@ players = {
         'etienne blanc', 'étienne blancs', 'tits blanc', 'tits blancs'
     ]
 }
+
+def displayName(player):
+    players = {
+        "1-BLANC": '',
+        "2-BLANC": 'andréanne chagnon',
+        "3-BLANC": 'alexandre-sacha simoneau',
+        "4-BLANC": 'maxime roy',
+        "5-BLANC": 'simon maltais',
+        "6-BLANC": 'laurianne paquette',
+        "7-BLANC": 'étienne desbiens',
+        "1-BLEU": '',
+        "2-BLEU": 'léonie alain',
+        "3-BLEU": 'francois laurin',
+        "4-BLEU": 'anne-sophie dozois',
+        "5-BLEU": 'simon courchesne',
+        "6-BLEU": 'mathieu grondin',
+        "7-BLEU": 'félix leroux',
+        "1-ROUGE": 'anaëlle desrochers',
+        "2-ROUGE": 'élodie turcotte',
+        "3-ROUGE": 'firdaws hamada',
+        "4-ROUGE": 'anne trottier',
+        "5-ROUGE": 'mathieu muir',
+        "6-ROUGE": '',
+        "7-ROUGE": 'jean-gab morin',
+        "1-VERT": '',
+        "2-VERT": 'anne-catherine choquette',
+        "3-VERT": 'anthony lebrun',
+        "4-VERT": 'simon turcotte',
+        "5-VERT": 'jean-benoit mongeau',
+        "6-VERT": 'rafaël poggetti bernardi',
+        "7-VERT": 'catherine robert',
+        "9-VERT": ''
+    }
+    return players.get(player, f"player does not exist: {player}")
+
+def score():
+    return {
+        "1-BLANC": 0,
+        "2-BLANC": 0,
+        "3-BLANC": 0,
+        "4-BLANC": 0,
+        "5-BLANC": 0,
+        "6-BLANC": 0,
+        "7-BLANC": 0,
+        "1-BLEU": 0,
+        "2-BLEU": 0,
+        "3-BLEU": 0,
+        "4-BLEU": 0,
+        "5-BLEU": 0,
+        "6-BLEU": 0,
+        "7-BLEU": 0,
+        "1-ROUGE": 0,
+        "2-ROUGE": 0,
+        "3-ROUGE": 0,
+        "4-ROUGE": 0,
+        "5-ROUGE": 0,
+        "6-ROUGE": 0,
+        "7-ROUGE": 0,
+        "1-VERT": 0,
+        "2-VERT": 0,
+        "3-VERT": 0,
+        "4-VERT": 0,
+        "5-VERT": 0,
+        "6-VERT": 0,
+        "7-VERT": 0,
+    }
