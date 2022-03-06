@@ -30,9 +30,7 @@ players = {
         'r4', '4r', '4 r', '4-rouge', '4-rouges', 'rouge-4', 'rouge 4',
         'red-4', 'red4', '4rouge', '4rouges', '4 rouge', '4 rouges', '4-red',
         '4 red', '4red', '4 chandail rouge', '4 des rouges',
-        '4 dans les rouges', 'anne', 'trottier', 'annet', 'anne trottier',
-        'annenditdesaffaires', 'annetro', 'la maman de abbie',
-        'la blonde a jenga', 'anne rouge', 'anne rouges'
+        '4 dans les rouges'
     ],
     "5-rouge": [
         'r5', '5r', '5 r', '5-rouge', '5-rouges', 'rouge-5', 'rouge 5',
@@ -47,7 +45,9 @@ players = {
         'r6', '6r', '6 r', '6-rouge', '6-rouges', 'rouge-6', 'rouge 6',
         'red-6', 'red6', '6rouge', '6rouges', '6 rouge', '6 rouges', '6-red',
         '6 red', '6red', '6 chandail rouge', '6 des rouges',
-        '6 dans les rouges'
+        '6 dans les rouges', 'anne', 'trottier', 'annet', 'anne trottier',
+        'annenditdesaffaires', 'annetro', 'la maman de abbie',
+        'la blonde a jenga', 'anne rouge', 'anne rouges'
     ],
     "7-rouge": [
         'r7', '7r', '7 r', '7-rouge', '7-rouges', 'rouge-7', 'rouge 7',
@@ -282,9 +282,9 @@ def displayName(player):
         "1-ROUGE": 'anaëlle desrochers',
         "2-ROUGE": 'élodie turcotte',
         "3-ROUGE": 'firdaws hamada',
-        "4-ROUGE": 'anne trottier',
+        "4-ROUGE": '',
         "5-ROUGE": 'mathieu muir',
-        "6-ROUGE": '',
+        "6-ROUGE": 'anne trottier',
         "7-ROUGE": 'jean-gab morin',
         "1-VERT": '',
         "2-VERT": 'anne-catherine choquette',
