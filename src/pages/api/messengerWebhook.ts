@@ -46,7 +46,7 @@ function handleMessengerPost(request: NextApiRequest, response: NextApiResponse)
         const { id = undefined } = sender;
         const { text = undefined } = message;
         setMessage({
-          matchId: '1640194878059',
+          matchId: '1640194878059', // TODO: Get current match id
           senderId: id,
           body: text
         });
