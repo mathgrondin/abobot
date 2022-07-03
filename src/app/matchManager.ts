@@ -40,7 +40,6 @@ export function getAllMatchIds(): Promise<string[]> {
     });
 }
 
-
 export function getCurrentMatch(): Promise<Match | undefined> {
   const matchId = getCurrentMatchId();
   return getMatch(matchId);
