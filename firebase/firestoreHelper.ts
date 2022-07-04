@@ -1,5 +1,5 @@
 import { collection, DocumentData, getDocs, QuerySnapshot } from "firebase/firestore";
-import { db } from "../../firebase/clientApp";
+import { db } from "./clientApp";
 
 export function readCollection(collectionKey: string): Promise<QuerySnapshot<DocumentData>> {
   return Promise.resolve()

@@ -1,6 +1,6 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
-import { readCollection } from "./firestoreHelper";
+import { readCollection } from "../../firebase/firestoreHelper";
 
 export type Message = {
   senderId: string,

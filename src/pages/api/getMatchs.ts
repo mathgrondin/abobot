@@ -11,4 +11,14 @@ const getMatchsAPI: NextApiHandler = async (_request, response) => {
   });
 };
 
+
+const saisons = [
+  {
+    "2022-2023": {
+      "teams": {},
+      "matches": {}
+    }
+  }
+]
+
 export default getMatchsAPI;

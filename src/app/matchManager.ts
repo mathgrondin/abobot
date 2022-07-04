@@ -1,4 +1,4 @@
-import { readCollection } from "./firestoreHelper";
+import { readCollection } from "../../firebase/firestoreHelper";
 
 export type Match = {
   messages: {
