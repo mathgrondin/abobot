@@ -6,7 +6,6 @@ import { getTeamPlayersDisplayNames } from "./playerRepository";
 export function getCurrentMatchData(): Promise<Match>{
     const currentMatchId = epochToday()
     const currentSeasonId = getCurrentSeasonId()
-    console.log(currentMatchId)
     return Promise.resolve()
         .then(
             () => {

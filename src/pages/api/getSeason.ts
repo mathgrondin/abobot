@@ -3,7 +3,24 @@ import { asyncSafetyWrap } from "../../helpers/safetyWrap";
 import { getSeason } from "../../app/repository/seasonRepository"
 import { Season } from "../../Types/collectionMap";
 import { getCurrentSeasonId } from "../../helpers/epoch";
-
+/**
+* @swagger
+* /api/getSeason:
+*   get:
+*     summary: get all season data
+*     description: 
+*     produces:
+*       - application/json
+*     parameters:
+*       - name: seasonId
+*         description: format is YYYYYY, Default is current season
+*         in: query
+*         required: false
+*         type: string
+*     responses:
+*       200:
+*         description: 
+*/
 const getSeasonAPI : NextApiHandler = async (_request, response) => {
     return asyncSafetyWrap(
         async () => {
