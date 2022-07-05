@@ -1,4 +1,5 @@
 export type Player = {
     id: string,
-    displayName: string
+    displayName: string,
+    penalty: number
 }

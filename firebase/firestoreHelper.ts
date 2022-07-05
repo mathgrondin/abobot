@@ -1,4 +1,4 @@
-import { collection, DocumentData, getDocs, QuerySnapshot } from "firebase/firestore";
+import { collection, DocumentData, getDocs, QuerySnapshot} from "firebase/firestore";
 import { db } from "./clientApp";
 
 export function readCollection(collectionKey: string): Promise<QuerySnapshot<DocumentData>> {
@@ -7,3 +7,4 @@ export function readCollection(collectionKey: string): Promise<QuerySnapshot<Doc
 };
 
 export function writeDoc() { };
+
