@@ -1,4 +1,4 @@
-import { readCollection, writeDoc } from "../../../firebase/firestoreHelper";
+import { readCollection, updateDocument, writeDocument } from "../../../firebase/firestoreHelper";
 
 const SEASONS_COLLECTION_ID = "seasons";
 
@@ -17,10 +17,19 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
                 return undefined;
             }
             console.log("seasonSnapshot", seasonSnapshot.data());
-            const season = seasonSnapshot.data() as Season;
+            const season = seasonSnapshot.data()[seasonId] as Season;
             console.log("season", season, "seasonId", season.id);
             return season;
         })
+}
+
+function updateSeason(season: Season): Promise<Season | undefined> {
+    return Promise.resolve()
+        .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, {...season}))
+        .then(() => {
+            console.log("Updated season ", season.id)
+        })
+        .then(() => season);
 }
 
 function createSeason(seasonId: string): Promise<Season | undefined> {
@@ -31,13 +40,14 @@ function createSeason(seasonId: string): Promise<Season | undefined> {
     }
 
     return Promise.resolve()
-        .then(() => writeDoc(SEASONS_COLLECTION_ID, {[seasonId]: season}))
-        .then(() => season)
+        .then(() => writeDocument(SEASONS_COLLECTION_ID, seasonId, season))
+        .then(() => season);
 }
 
 const SeasonRepository = {
-    createSeason,
     getSeason,
+    updateSeason,
+    createSeason,
 }
 
 export default SeasonRepository;

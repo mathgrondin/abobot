@@ -1,4 +1,4 @@
-import { readCollection, writeDoc } from "../../../firebase/firestoreHelper"
+import { readCollection, writeDocument } from "../../../firebase/firestoreHelper"
 
 export type Match = {
     id: string
@@ -41,12 +41,13 @@ function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefi
     }
 
     return Promise.resolve()
-        .then(() => writeDoc(MATCHS_COLLECTION_ID, {[matchId]: match}))
+        .then(() => writeDocument(MATCHS_COLLECTION_ID, matchId, match))
         .then(() => match)
 }
 
 const MatchRepository = {
     getMatch,
+    createMatch,
 };
 
 export default MatchRepository;

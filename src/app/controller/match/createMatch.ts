@@ -1,4 +1,5 @@
 import { NextApiRequest } from "next";
+import { Match } from "../../repository/matchRepository";
 import MatchWorkflow from "../../workflow/matchWorkflow";
 
 /**
@@ -11,15 +12,17 @@ import MatchWorkflow from "../../workflow/matchWorkflow";
 *       - application/json
 *     parameters:
 *       - name: teamIds
-*         description: list of two teams participating to the match
+*         description: list of the two teams participating to the match
 *         required: true
-*         type: string[]
+*         example: rouge,bleu
+*         schema:
+*            type: string[]
 *     responses:
 *       200:
 *         description: 
 */
-export async function createMatch(request: NextApiRequest) {
+export async function createMatch(request: NextApiRequest): Promise<Match> {
     const teamIds = (request.query.teamIds as string).split(',');
-    const result = await MatchWorkflow.createMatch(teamIds);
-    console.log('teamIds', teamIds[1]);
+    const newMatch = await MatchWorkflow.createMatch(teamIds);
+    return newMatch;
 }

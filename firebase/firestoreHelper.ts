@@ -1,4 +1,4 @@
-import { addDoc, collection, DocumentData, DocumentReference, getDocs, QuerySnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, DocumentData, DocumentReference, getDocs, QuerySnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./clientApp";
 
 export function readCollection(collectionKey: string): Promise<QuerySnapshot<DocumentData>> {
@@ -6,8 +6,12 @@ export function readCollection(collectionKey: string): Promise<QuerySnapshot<Doc
     .then(() => getDocs(collection(db, collectionKey)));
 };
 
-
-export function writeDoc(collectionKey: string, data: any): Promise<DocumentReference> {
+export function writeDocument(collectionKey: string, dataKey: string, data: any): Promise<void> {
   return Promise.resolve()
-    .then(() => addDoc(collection(db, collectionKey), data));
+    .then(() => setDoc(doc(db, collectionKey, dataKey), data))
+};
+
+export function updateDocument(collectionKey: string, dataKey: string, data: any): Promise<void> {
+  return Promise.resolve()
+    .then(() => updateDoc(doc(db, collectionKey, dataKey), data))
 };

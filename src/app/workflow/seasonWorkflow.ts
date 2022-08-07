@@ -9,7 +9,7 @@ const createSeason = (seasonId: string): Promise<Season | undefined> => {
 }
 
 const updateSeason = (season: Season): Promise<Season | undefined> => {
-    return undefined;
+    return SeasonRepository.updateSeason(season);
 }
 
 const deleteSeason = (): Promise<Season | undefined> => {

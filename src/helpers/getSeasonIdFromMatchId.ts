@@ -1,9 +1,9 @@
 import { getMonthFromDate, getYearFromDate } from "./timeHelper";
 
-export function getSeasonIdFromDate(date: number): string{
+export function getSeasonIdFromMatchId(matchId: number): string{
     var earlySeasonDateRange = [6, 11]
-    var month = getMonthFromDate(date);
-    var year = getYearFromDate(date);
+    var year = parseInt(`${matchId}`.slice(0,4));
+    var month = parseInt(`${matchId}`.slice(4,6));
     if(earlySeasonDateRange[0] <= month && earlySeasonDateRange[1] >= month){
         return `${year}${year+1}`
     } else {

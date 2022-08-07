@@ -1,11 +1,10 @@
-import { getSeasonIdFromDate } from "../../helpers/getSeasonFromDate";
-import { getMonthFromDate, getYearFromDate } from "../../helpers/timeHelper";
+import { getCurrentMatchId } from "../../helpers/getCurrentMatchId";
+import { getSeasonIdFromMatchId } from "../../helpers/getSeasonIdFromMatchId";
 import MatchRepository, { Match } from "../repository/matchRepository";
 import SeasonWorkflow from "./seasonWorkflow";
 
 async function getMatch(matchId: number): Promise<Match | undefined>{
-    var season = getSeasonIdFromDate(matchId);
-    console.log('season', season);
+    var season = getSeasonIdFromMatchId(matchId);
     if(!season){
         return undefined;
     }
@@ -15,20 +14,16 @@ async function getMatch(matchId: number): Promise<Match | undefined>{
 }
 
 async function createMatch(teamIds: string[]): Promise<Match | undefined>{
-    const matchId = Date.now() as number;
-    const seasonId = getSeasonIdFromDate(matchId);
+    const matchId = getCurrentMatchId();
+    const seasonId = getSeasonIdFromMatchId(matchId);
     var season = await SeasonWorkflow.getSeason(seasonId);
-    console.log('seasonA', season);
     if(season == undefined){
         var season = await SeasonWorkflow.createSeason(seasonId);
     }
-    console.log('seasonB', season);
-    return undefined;
-    // console.log('seasonB', season);
-    // season.matchIds.push(`${matchId}`);
-    // await SeasonWorkflow.updateSeason(season);
-    // const match = await MatchWorkflow.createMatch(teamIds);
-    // return match;
+    season.matchIds.push(`${matchId}`);
+    await SeasonWorkflow.updateSeason(season);
+    const match = await MatchRepository.createMatch(`${matchId}`, teamIds);
+    return match;
 }
 
 const updateMatch = (): Promise<Match | undefined> => {
