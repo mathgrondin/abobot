@@ -16,9 +16,7 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
             if(!seasonSnapshot){
                 return undefined;
             }
-            console.log("seasonSnapshot", seasonSnapshot.data());
             const season = seasonSnapshot.data()[seasonId] as Season;
-            console.log("season", season, "seasonId", season.id);
             return season;
         })
 }

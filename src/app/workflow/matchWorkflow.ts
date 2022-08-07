@@ -1,6 +1,8 @@
+import { ApiError } from "next/dist/server/api-utils";
 import { getCurrentMatchId } from "../../helpers/getCurrentMatchId";
 import { getSeasonIdFromMatchId } from "../../helpers/getSeasonIdFromMatchId";
 import MatchRepository, { Match } from "../repository/matchRepository";
+import { validateNewMatchTeams } from "../validator/matchValidator";
 import SeasonWorkflow from "./seasonWorkflow";
 
 async function getMatch(matchId: number): Promise<Match | undefined>{
@@ -13,13 +15,14 @@ async function getMatch(matchId: number): Promise<Match | undefined>{
     return match;
 }
 
-async function createMatch(teamIds: string[]): Promise<Match | undefined>{
+async function createMatch(teamIds: string[]): Promise<Match>{
     const matchId = getCurrentMatchId();
     const seasonId = getSeasonIdFromMatchId(matchId);
     var season = await SeasonWorkflow.getSeason(seasonId);
     if(season == undefined){
-        var season = await SeasonWorkflow.createSeason(seasonId);
+        throw new ApiError(405, "No season found, create a season first")
     }
+    validateNewMatchTeams(teamIds, season)
     season.matchIds.push(`${matchId}`);
     await SeasonWorkflow.updateSeason(season);
     const match = await MatchRepository.createMatch(`${matchId}`, teamIds);

@@ -21,8 +21,6 @@ import MatchWorkflow from "../../workflow/matchWorkflow";
 */
 export async function getMatch(request: NextApiRequest) {
     const matchId = parseInt(request.query.matchId as string);
-    console.log('matchId', matchId);
     const match = await MatchWorkflow.getMatch(matchId);
-    console.log('match', match);
     return match;
 }
