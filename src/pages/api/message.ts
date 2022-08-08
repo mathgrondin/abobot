@@ -5,6 +5,6 @@ import { handleRequest } from "../../helpers/handleRequest";
 const matchApi : NextApiHandler = async (request, response) => handleRequest(response, async () => {
     const result = await MessageController.handleRequest(request);
     response.status(200).json(result);
-})
+});
 
 export default matchApi;
