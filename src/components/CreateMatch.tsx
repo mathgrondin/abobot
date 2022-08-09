@@ -12,7 +12,9 @@ const TeamSelector: FunctionComponent<TeamSelectorProps> = () => {
   );
 };
 
-export const CreateMatch: FunctionComponent<void> = () => {
+export type props = object;
+
+export const CreateMatch: FunctionComponent<props> = () => {
   const [teams, setTeams] = useState<string[]>([]);
   return (
   <div className={style.CreateMatch}>
