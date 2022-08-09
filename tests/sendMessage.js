@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const URL = 'http://localhost:3000/api/messengerWebhook/'
+const URL = 'http://localhost:3000/api/message/'
 const text = 'un message'
 const id = 'mathieu'
 
