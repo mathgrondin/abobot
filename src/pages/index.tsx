@@ -7,7 +7,7 @@ import { CreateMatch } from '../components/CreateMatch';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const environment = process.env.NODE_ENV || 'development';
-const API = (environment === 'development' ? 'http://localhost:3000' : '') + "/api/getMatchs";
+const API = (environment === 'development' ? 'http://localhost:3000' : '') + '/api/getMatchs';
 
 const IndexPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);

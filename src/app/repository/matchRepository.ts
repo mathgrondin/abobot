@@ -1,4 +1,4 @@
-import { readCollection, updateDocument, writeDocument } from "../../../firebase/firestoreHelper"
+import { readCollection, updateDocument, writeDocument } from '../../../firebase/firestoreHelper';
 
 export type Match = {
     id: string
@@ -12,9 +12,9 @@ export type Match = {
     }
 }
 
-const MATCHS_COLLECTION_ID = "matchs"
+const MATCHS_COLLECTION_ID = 'matchs';
 
-function getMatch(matchId: string, seasonId: string): Promise<Match | undefined> {
+function getMatch(matchId: string): Promise<Match | undefined> {
     return Promise.resolve()
         .then(() => readCollection(MATCHS_COLLECTION_ID))
         .then(collectionSnapshot => {
@@ -24,7 +24,7 @@ function getMatch(matchId: string, seasonId: string): Promise<Match | undefined>
             }
             const match = matchSnapshot.data()[matchId] as Match;
             return match;
-        })
+        });
 }
 
 function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefined> {
@@ -36,11 +36,11 @@ function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefi
             teamB: 0,
         },
         messages: {}
-    }
+    };
 
     return Promise.resolve()
         .then(() => writeDocument(MATCHS_COLLECTION_ID, matchId, match))
-        .then(() => match)
+        .then(() => match);
 }
 
 function updateMatch(match: Match): Promise<Match | undefined> {

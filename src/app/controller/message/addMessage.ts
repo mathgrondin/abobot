@@ -1,7 +1,6 @@
-import { NextApiRequest } from "next";
-import { ApiError } from "next/dist/server/api-utils";
-import { Match } from "../../repository/matchRepository";
-import MatchWorkflow from "../../workflow/matchWorkflow";
+import { NextApiRequest } from 'next';
+import { ApiError } from 'next/dist/server/api-utils';
+import MatchWorkflow from '../../workflow/matchWorkflow';
 
 const InvalidMessage_InvalidBody = (reason: string) => new ApiError(400, `Invalid body parameters: ${reason}`);
 
@@ -17,7 +16,7 @@ const InvalidMessage_InvalidBody = (reason: string) => new ApiError(400, `Invali
 *         description: 
 */
 export async function addMessage(request: NextApiRequest): Promise<string> {
-    const { object, entry } = request?.body;
+    const { object, entry } = request.body;
     if (object !== 'page' || !Array.isArray(entry)) {
         throw InvalidMessage_InvalidBody('object value should be page and entry should be an array');
     }

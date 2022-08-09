@@ -1,6 +1,5 @@
-import { ApiError } from "next/dist/server/api-utils";
-import { Exception } from "sass";
-import SeasonRepository, { Season } from "../repository/seasonRepository";
+import { ApiError } from 'next/dist/server/api-utils';
+import { Season } from '../repository/seasonRepository';
 
 export const A_TEAM_INDEX = 0;
 export const B_TEAM_INDEX = 1;
@@ -26,5 +25,5 @@ export function validateNewMatchTeams(teamIds: string[], season: Season){
         if(!season.teamIds.includes(teamId)){
             throw InvalidNewMatchQuery_TeamNotPlayingThisSeason(teamId, season.id);
         }
-    })
+    });
 }

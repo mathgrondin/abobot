@@ -1,6 +1,6 @@
-import { NextApiRequest } from "next";
-import { Match } from "../../repository/matchRepository";
-import MatchWorkflow from "../../workflow/matchWorkflow";
+import { NextApiRequest } from 'next';
+import { Match } from '../../repository/matchRepository';
+import MatchWorkflow from '../../workflow/matchWorkflow';
 
 /**
 * @swagger

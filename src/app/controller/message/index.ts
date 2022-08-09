@@ -1,7 +1,6 @@
-import { verify } from "crypto";
-import { NextApiRequest } from "next";
-import { addMessage } from "./addMessage";
-import { verificationChallenge } from "./verificationChallenge";
+import { NextApiRequest } from 'next';
+import { addMessage } from './addMessage';
+import { verificationChallenge } from './verificationChallenge';
 
 export const MessageController = {
     handleRequest: async(request : NextApiRequest) => {
@@ -10,4 +9,4 @@ export const MessageController = {
             case 'POST': return await addMessage(request);
         }
     }
-}
+};
