@@ -2,9 +2,9 @@ import { NextApiHandler } from 'next';
 import { MessageController } from '../../app/controller/message';
 import { handleRequest } from '../../helpers/handleRequest';
 
-const matchApi : NextApiHandler = async (request, response) => handleRequest(response, async () => {
+const messageApi : NextApiHandler = async (request, response) => handleRequest(response, async () => {
     const result = await MessageController.handleRequest(request);
     response.status(200).json(result);
 });
 
-export default matchApi;
+export default messageApi;

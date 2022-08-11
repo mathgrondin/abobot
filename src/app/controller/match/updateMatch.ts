@@ -13,8 +13,8 @@ import MatchWorkflow from '../../workflow/matchWorkflow';
 *       200:
 *         description: 
 */
-export async function updateMatch(request : NextApiRequest) {
-    const {match} = request.body;
+export async function updateMatch(request: NextApiRequest) {
+    const { match } = request.body;
     const updatedMatch = await MatchWorkflow.updateMatch(match);
     return updatedMatch;
 }
