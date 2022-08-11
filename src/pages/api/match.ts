@@ -1,6 +1,6 @@
-import { NextApiHandler } from "next";
-import { MatchController } from "../../app/controller/match";
-import { handleRequest } from "../../helpers/handleRequest";
+import { NextApiHandler } from 'next';
+import { MatchController } from '../../app/controller/match';
+import { handleRequest } from '../../helpers/handleRequest';
 
 const matchApi : NextApiHandler = async (request, response) => handleRequest(response, async () => {
     const result = await MatchController.handleRequest(request);
