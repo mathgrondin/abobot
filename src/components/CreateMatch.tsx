@@ -1,9 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import style from './CreateMatch.module.scss';
 
-type Props = {
-}
-
 type TeamSelectorProps = {
   teams: string[], 
   setTeams: (teams: string[]) => void
@@ -15,7 +12,9 @@ const TeamSelector: FunctionComponent<TeamSelectorProps> = () => {
   );
 };
 
-export const CreateMatch: FunctionComponent<Props> = ({ }) => {
+export type props = object;
+
+export const CreateMatch: FunctionComponent<props> = () => {
   const [teams, setTeams] = useState<string[]>([]);
   return (
   <div className={style.CreateMatch}>

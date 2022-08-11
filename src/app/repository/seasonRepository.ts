@@ -1,6 +1,6 @@
-import { readCollection, updateDocument, writeDocument } from "../../../firebase/firestoreHelper";
+import { readCollection, updateDocument, writeDocument } from '../../../firebase/firestoreHelper';
 
-const SEASONS_COLLECTION_ID = "seasons";
+const SEASONS_COLLECTION_ID = 'seasons';
 
 export type Season = {
     id: string,
@@ -16,17 +16,14 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
             if(!seasonSnapshot){
                 return undefined;
             }
-            const season = seasonSnapshot.data()[seasonId] as Season;
+            const season = seasonSnapshot.data() as Season;
             return season;
-        })
+        });
 }
 
 function updateSeason(season: Season): Promise<Season | undefined> {
     return Promise.resolve()
         .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, {...season}))
-        .then(() => {
-            console.log("Updated season ", season.id)
-        })
         .then(() => season);
 }
 
@@ -35,7 +32,7 @@ function createSeason(seasonId: string): Promise<Season | undefined> {
         id: seasonId,
         matchIds: [],
         teamIds: []
-    }
+    };
 
     return Promise.resolve()
         .then(() => writeDocument(SEASONS_COLLECTION_ID, seasonId, season))
@@ -46,6 +43,6 @@ const SeasonRepository = {
     getSeason,
     updateSeason,
     createSeason,
-}
+};
 
 export default SeasonRepository;

@@ -1,10 +1,12 @@
 import { NextApiHandler } from 'next';
-import { MessageController } from '../../app/controller/message';
+import { SeasonController } from '../../app/controller/season';
 import { handleRequest } from '../../helpers/handleRequest';
 
 const matchApi : NextApiHandler = async (request, response) => handleRequest(response, async () => {
-    const result = await MessageController.handleRequest(request);
+    const result = await SeasonController.handleRequest(request);
     response.status(200).json(result);
 });
 
 export default matchApi;
+
+
