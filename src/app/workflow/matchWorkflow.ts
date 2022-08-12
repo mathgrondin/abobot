@@ -3,7 +3,7 @@ import SeasonWorkflow from './seasonWorkflow';
 import { ApiError } from 'next/dist/server/api-utils';
 import { getCurrentMatchId } from '../../helpers/getCurrentMatchId';
 import { getSeasonIdFromMatchId } from '../../helpers/getSeasonIdFromMatchId';
-import { validateNewMatchTeams } from '../validator/matchValidator';
+import { validateNewMatch } from '../validator/matchValidator';
 
 const MatchWorkflowError_InvalidMatchId = () => new ApiError(404, 'Invalid match id');
 const MatchWorkflowError_NoMatchAtTheMoment = () => new ApiError(405, 'Not match started at the moment. Please try again');
@@ -26,7 +26,7 @@ async function createMatch(teamIds: string[]): Promise<Match> {
     if (season == undefined) {
         throw MatchWorkflowError_SeasonNotFound();
     }
-    validateNewMatchTeams(teamIds, season);
+    validateNewMatch(matchId, teamIds, season);
     season.matchIds.push(`${matchId}`);
     await SeasonWorkflow.updateSeason(season);
     const match = await MatchRepository.createMatch(`${matchId}`, teamIds);
