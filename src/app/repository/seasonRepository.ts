@@ -25,8 +25,7 @@ function getAllSeasons(): Promise<Season[]> {
     return Promise.resolve()
         .then(() => readCollection(SEASONS_COLLECTION_ID))
         .then(collectionSnapshot => {
-            const seasons = collectionSnapshot.docs.map(document => document.data() as Season);
-            return seasons;
+            return collectionSnapshot.docs.map(document => document.data() as Season);
         });
 }
 
