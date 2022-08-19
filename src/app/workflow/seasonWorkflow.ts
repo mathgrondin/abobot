@@ -9,6 +9,10 @@ const getSeason = (seasonId: string): Promise<Season | undefined> => {
     return SeasonRepository.getSeason(seasonId);
 };
 
+const getAllSeasons = (): Promise<Season[]> => {
+    return SeasonRepository.getAllSeasons();
+};
+
 const createSeason = (seasonId: string): Promise<Season | undefined> => {
     return Promise.resolve()
     .then(async () => {
@@ -31,6 +35,7 @@ const deleteSeason = (): Promise<Season | undefined> => {
 
 const SeasonWorkflow = {
     getSeason,
+    getAllSeasons,
     createSeason,
     updateSeason,
     deleteSeason,
