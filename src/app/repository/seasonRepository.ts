@@ -13,7 +13,7 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
         .then(() => readCollection(SEASONS_COLLECTION_ID))
         .then(collectionSnapshot => {
             const seasonSnapshot = collectionSnapshot.docs.find(document => document.id === seasonId);
-            if(!seasonSnapshot){
+            if (!seasonSnapshot) {
                 return undefined;
             }
             const season = seasonSnapshot.data() as Season;
@@ -21,9 +21,17 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
         });
 }
 
+function getAllSeasons(): Promise<Season[]> {
+    return Promise.resolve()
+        .then(() => readCollection(SEASONS_COLLECTION_ID))
+        .then(collectionSnapshot => {
+            return collectionSnapshot.docs.map(document => document.data() as Season);
+        });
+}
+
 function updateSeason(season: Season): Promise<Season | undefined> {
     return Promise.resolve()
-        .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, {...season}))
+        .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, { ...season }))
         .then(() => season);
 }
 
@@ -41,6 +49,7 @@ function createSeason(seasonId: string): Promise<Season | undefined> {
 
 const SeasonRepository = {
     getSeason,
+    getAllSeasons,
     updateSeason,
     createSeason,
 };
