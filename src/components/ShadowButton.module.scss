@@ -1,15 +1,19 @@
 .ShadowButton{
+    box-sizing: border-box;
     padding: 1.6rem;
-    border-radius: 0.8rem;
     background-color: #fff;
-    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+    border-radius: 3.2rem;
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.25);
     border: none;
     font-size: 1.6rem;
     transition: all 0.2s ease-in-out;
+    border: #fff 0.2rem solid;
     &:hover{
         cursor: pointer;
-        padding: 1.8rem;
-        font-size: 1.8rem;
-        box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.1);
     }
+}
+
+.SelectedShadowButton{
+    @extend .ShadowButton;
+    border: #000 0.2rem solid;
 }

@@ -1,8 +1,14 @@
 import React from 'react';
 import styles from './ShadowButton.module.scss';
 
-export default function ShadowButton({label, onClick}: {label: string ,onClick?: () => void}) {
+export type props = {
+  label: string,
+  selected?: boolean,
+  onClick?: () => void
+}
+
+export default function ShadowButton({ label, selected, onClick }: props) {
   return (
-    <button className={styles.ShadowButton} onClick={onClick}>{label}</button>
+    <button className={selected ? styles.SelectedShadowButton: styles.ShadowButton} onClick={onClick}>{label}</button>
   );
 }

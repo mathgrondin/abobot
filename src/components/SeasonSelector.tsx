@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import React from 'react';
 import { Season } from '../app/repository/seasonRepository';
 import { useGetAllSeasons } from '../hooks/useGetAllSeasons';
 import styles from './SeasonSelector.module.scss';
@@ -14,8 +15,13 @@ export default function SeasonSelector() {
       {isLoading && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {allSeasons?.length > 0 &&
-        <div>{allSeasons.map(season =>
-          <ShadowButton key={season.id} label={getSeasonDisplay(season)}/>)}
+        <div>{allSeasons.map(season => {
+          return (
+            <Link key={season.id} href={`/season/${season.id}`} passHref>
+              <ShadowButton label={getSeasonDisplay(season)} />
+            </Link>);
+        }
+        )}
         </div>
       }
     </div>
