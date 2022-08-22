@@ -22,7 +22,7 @@ function getMatch(matchId: string): Promise<Match | undefined> {
             if(!matchSnapshot){
                 return undefined;
             }
-            const match = matchSnapshot.data()[matchId] as Match;
+            const match = matchSnapshot.data() as Match;
             return match;
         });
 }
