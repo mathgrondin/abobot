@@ -3,20 +3,27 @@
 $font-family: 'Inter', sans-serif;
 
 html {
-  font-size: 10px;
+  font-size: 8px;
   font-family: $font-family;
   text-align: center;
+  
+  @media screen and (min-width: 720px) {
+    font-size: 10px;
+  }
 
   h1 {
     font-size: 3.2rem;
+    margin: 0;
   }
 
   h2 {
     font-size: 2.4rem;
+    margin: 0;
   }
 
   p {
     font-size: 1.6rem;
+    margin: 0;
   }
 
   bottom {

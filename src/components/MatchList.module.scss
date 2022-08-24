@@ -1,4 +1,8 @@
 .MatchList{
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+
     .MatchCard{
         display: flex;
         align-items: center;
@@ -29,6 +33,16 @@
         .MatchCardTeamBleu{
             @extend .MatchCardTeam;
             background-color: #5685FF;
+        }
+
+        .MatchCardTeamVert{
+            @extend .MatchCardTeam;
+            background-color: #3EDF9C;
+        }
+
+        .MatchCardTeamBlanc{
+            @extend .MatchCardTeam;
+            background-color: #F5F5F5;
         }
     }
 }
