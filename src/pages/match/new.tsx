@@ -28,7 +28,7 @@ export default function NewMatch({ season, teams }: props) {
   const [loading, setLoading] = useState(false);
   const matchId = getCurrentMatchId();
   const seasonId = getSeasonIdFromMatchId(matchId);
-  const seasonDisplayName = getSeasonDisplayName({ id: seasonId } as Season);
+  const seasonDisplayName = getSeasonDisplayName(seasonId);
 
   const validateTeamCandidate = (candidate: string, oppositeTeam: string, setFunction: (team: string) => void) => {
     if (candidate != oppositeTeam) {
@@ -44,7 +44,8 @@ export default function NewMatch({ season, teams }: props) {
     setLoading(true);
     const response = await fetch(`/api/match?teamIds=${teamA},${teamB}`, { method: 'POST' });
     if(response.ok){
-      router.push(`/season/${season.id}`);    
+      router.push(`/season/${season.id}`);
+      return;
     }
     setLoading(false);    
     const {message} = await response.json();

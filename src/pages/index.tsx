@@ -4,8 +4,6 @@ import HeaderLogo from '../components/HeaderLogo';
 import SeasonSelector from '../components/SeasonSelector';
 import Screen from '../components/Screen';
 
-
-
 const IndexPage: NextPage = () => {
   return (
     <Screen>

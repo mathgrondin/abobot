@@ -1,0 +1,15 @@
+.TeamsHeader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+  .TeamBadge{
+    position: relative;
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 50%;
+    img{
+      border-radius: 50%;
+    }
+  }
+}
