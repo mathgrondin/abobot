@@ -1,3 +1,1 @@
-import { Season } from '../app/repository/seasonRepository';
-
-export const getSeasonDisplayName = (season: Season) => season.id.slice(0, 4) + ' - ' + season.id.slice(4);
+export const getSeasonDisplayName = (seasonId: string) => seasonId.slice(0, 4) + ' - ' + seasonId.slice(4);

@@ -22,7 +22,7 @@ type props = {
 
 export default function SeasonScreen({ season, matches, teams }: props) {
   const [showMatches, setShowMatches] = useState(true);
-  const seasonDisplayName = getSeasonDisplayName(season);
+  const seasonDisplayName = getSeasonDisplayName(season.id);
 
   return (
     <Screen>
@@ -30,7 +30,7 @@ export default function SeasonScreen({ season, matches, teams }: props) {
       <div>
         <MatchOrTeamSelector showMatches={showMatches} setShowMatches={setShowMatches} />
         <Separator />
-        {showMatches && <MatchList matches={matches} teams={teams} />}
+        {showMatches && <MatchList matches={matches} teams={teams} seasonId={season.id}/>}
         {!showMatches && <TeamsView teams={teams} />}
       </div>
     </Screen>
@@ -38,15 +38,15 @@ export default function SeasonScreen({ season, matches, teams }: props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.params.id as string;
-  const season = await SeasonWorkflow.getSeason(id);
+  const seasonId = context.params.seasonId as string;
+  const season = await SeasonWorkflow.getSeason(seasonId);
   if (season) {
     const { matchIds, teamIds } = season;
-    const matches = (await Promise.all(matchIds.map(async id =>
-      await MatchWorkflow.getMatch(parseInt(id)))
+    const matches = (await Promise.all(matchIds.map(async matchId =>
+      await MatchWorkflow.getMatch(parseInt(matchId)))
     )).filter((match) => !!match);
-    const teams = (await Promise.all(teamIds.map(async id =>
-      await TeamWorkflow.getTeam(id))
+    const teams = (await Promise.all(teamIds.map(async teamId =>
+      await TeamWorkflow.getTeam(teamId))
     )).filter((team) => !!team);
     return {
       props: {
