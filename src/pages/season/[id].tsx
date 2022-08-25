@@ -12,6 +12,7 @@ import { Match } from '../../app/repository/matchRepository';
 import { Season } from '../../app/repository/seasonRepository';
 import { Team } from '../../app/repository/teamRepository';
 import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
+import ScreenTitle from '../../components/ScreenTitle';
 
 type props = {
     season: Season,
@@ -20,42 +21,42 @@ type props = {
 }
 
 export default function SeasonScreen({ season, matches, teams }: props) {
-    const [showMatches, setShowMatches] = useState(true);
-    const seasonDisplayName = getSeasonDisplayName(season);
+  const [showMatches, setShowMatches] = useState(true);
+  const seasonDisplayName = getSeasonDisplayName(season);
 
-    return (
-        <Screen>
-            <h1>{seasonDisplayName}</h1>
-            <div>
-                <MatchOrTeamSelector showMatches={showMatches} setShowMatches={setShowMatches} />
-                <Separator />
-                {showMatches && <MatchList matches={matches} teams={teams} />}
-                {!showMatches && <TeamsView teams={teams} />}
-            </div>
-        </Screen>
-    );
+  return (
+    <Screen>
+      <ScreenTitle title={seasonDisplayName} />
+      <div>
+        <MatchOrTeamSelector showMatches={showMatches} setShowMatches={setShowMatches} />
+        <Separator />
+        {showMatches && <MatchList matches={matches} teams={teams} />}
+        {!showMatches && <TeamsView teams={teams} />}
+      </div>
+    </Screen>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const id = context.params.id as string;
-    const season = await SeasonWorkflow.getSeason(id);
-    if (season) {
-        const { matchIds, teamIds } = season;
-        const matches = await Promise.all(matchIds.map(async id =>
-            await MatchWorkflow.getMatch(parseInt(id)))
-        );
-        const teams = await Promise.all(teamIds.map(async id =>
-            await TeamWorkflow.getTeam(id))
-        );
-        return {
-            props: {
-                season,
-                matches,
-                teams
-            },
-        };
-    }
+  const id = context.params.id as string;
+  const season = await SeasonWorkflow.getSeason(id);
+  if (season) {
+    const { matchIds, teamIds } = season;
+    const matches = (await Promise.all(matchIds.map(async id =>
+      await MatchWorkflow.getMatch(parseInt(id)))
+    )).filter((match) => !!match);
+    const teams = (await Promise.all(teamIds.map(async id =>
+      await TeamWorkflow.getTeam(id))
+    )).filter((team) => !!team);
     return {
-        notFound: true,
+      props: {
+        season,
+        matches,
+        teams
+      },
     };
+  }
+  return {
+    notFound: true,
+  };
 };

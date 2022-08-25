@@ -2,6 +2,7 @@ import React from 'react';
 import { Match } from '../app/repository/matchRepository';
 import { Team } from '../app/repository/teamRepository';
 import { getMatchDisplayName } from '../helpers/getMatchDisplayName';
+import CreateMatch from './CreateMatch';
 import styles from './MatchList.module.scss';
 
 export type props = {
@@ -16,14 +17,15 @@ export default function MatchList({ matches, teams }: props) {
     return (
       <div className={styles.MatchCard}>
         <p>{getMatchDisplayName(match.id)}</p>
-        <div className={styles['MatchCardTeam' + team1.name]}/>
-        <div className={styles['MatchCardTeam' + team2.name]}/>
+        <div className={styles['MatchCardTeam' + team1.name]} />
+        <div className={styles['MatchCardTeam' + team2.name]} />
       </div>
     );
   };
 
   return (
     <div className={styles.MatchList}>
+      <CreateMatch />
       {matches.map(match => <MatchCard key={match.id} match={match} />)}
     </div>
   );

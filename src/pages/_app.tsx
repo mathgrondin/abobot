@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 
 export default function Abobot({ Component, pageProps }: AppProps) {
   return (
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
   );
 }
