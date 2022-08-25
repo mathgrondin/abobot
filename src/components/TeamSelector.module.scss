@@ -1,0 +1,33 @@
+$image-size: 8.8rem;
+
+.TeamSelector{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+  margin-bottom: 3.2rem;
+
+  .Team{
+    position: relative;
+    width: $image-size;
+    height: $image-size;
+    img{
+      border-radius: 50%;
+      &:hover{
+        opacity: 0.5;
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .SelectedTeam{
+    position: relative;
+    outline: 0.8rem solid #FFC93F;
+    border-radius: 50%;
+    width: $image-size;
+    height: $image-size;
+    img{
+      border-radius: 50%;
+    }
+  }
+}

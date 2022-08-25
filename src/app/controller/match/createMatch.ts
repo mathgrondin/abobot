@@ -22,7 +22,7 @@ import MatchWorkflow from '../../workflow/matchWorkflow';
 *         description: 
 */
 export async function createMatch(request: NextApiRequest): Promise<Match> {
-    const teamIds = (request.query.teamIds as string).split(',');
-    const newMatch = await MatchWorkflow.createMatch(teamIds);
-    return newMatch;
+  const teamIds = (request.query.teamIds as string).split(',');
+  const newMatch = await MatchWorkflow.createMatch(teamIds);
+  return newMatch;
 }
