@@ -4,6 +4,8 @@ import { ApiError } from 'next/dist/server/api-utils';
 import { getCurrentMatchId } from '../../helpers/getCurrentMatchId';
 import { getSeasonIdFromMatchId } from '../../helpers/getSeasonIdFromMatchId';
 import { validateNewMatch } from '../validator/matchValidator';
+import VoteService from '../service/VoteService';
+import MessengerService from '../service/messengerService';
 
 const MatchWorkflowError_InvalidMatchId = () => new ApiError(404, 'Invalid match id');
 const MatchWorkflowError_NoMatchAtTheMoment = () => new ApiError(405, 'Not match started at the moment. Please try again');
@@ -33,16 +35,23 @@ async function createMatch(teamIds: string[]): Promise<Match> {
   return match;
 }
 
-async function addMessage(userId: string, message: string): Promise<Match> {
-  const matchId = getCurrentMatchId();
-  const match = await getMatch(matchId);
-  if (match == null) {
-    throw MatchWorkflowError_NoMatchAtTheMoment();
+async function addMessage(userId: string, message: string) {
+  const currentMatchId = getCurrentMatchId();
+  const currentMatch = await getMatch(currentMatchId);
+  if (currentMatch == null) {
+    return;
   }
 
-  match.messages[userId].push(message);
-  await updateMatch(match);
-  return match;
+  const reply = await VoteService.processMessage(currentMatch, userId, message);
+  if (reply) {
+    currentMatch.messages[userId].push(message);
+    await updateMatch(currentMatch);
+    await MessengerService.sendMessage(userId, reply);
+    return;
+  }
+
+  const errorMessage = 'TODO: get a meaningful error message';
+  await MessengerService.sendMessage(userId, errorMessage);
 }
 
 const updateMatch = (match: Match): Promise<Match> => {

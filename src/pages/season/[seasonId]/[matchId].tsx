@@ -13,42 +13,51 @@ import { Season } from '../../../app/repository/seasonRepository';
 import { Team } from '../../../app/repository/teamRepository';
 import { getMatchDisplayName } from '../../../helpers/getMatchDisplayName';
 import { getSeasonDisplayName } from '../../../helpers/getSeasonDisplayName';
+import StarResult from '../../../components/StarResult';
+import PlayerWorkflow from '../../../app/workflow/playerWorkflow';
+import { Player } from '../../../app/repository/playerRepository';
 
 type props = {
   season: Season,
   match: Match,
-  teams: Team[]
+  teams: Team[],
+  players: Player[]
 }
 
-export default function MatchScreen({ season, match, teams}: props) {
+export default function MatchScreen({ season, match, teams, players }: props) {
 
   return (
     <Screen>
       <div>
         <ScreenTitle title={getSeasonDisplayName(season.id)} />
         <ScreenSubtitle subtitle={getMatchDisplayName(match.id)} />
+        <TeamsHeader teamA={teams[0]} teamB={teams[1]} />
         <Separator />
-        <TeamsHeader teamA={teams[0]} teamB={teams[1]}/>
+        <StarResult season={season} match={match} teams={teams} players={players} />
       </div>
     </Screen>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const seasonId = context.params.seasonId as string;
-  const matchId = context.params.matchId as string;
+  const seasonId = (context.params?.seasonId || '') as string;
+  const matchId = (context.params?.matchId || '') as string;
   const season = await SeasonWorkflow.getSeason(seasonId);
   const match = await MatchWorkflow.getMatch(parseInt(matchId));
   if (season && match) {
     const teams = (await Promise.all(match.teamIds.map(async teamId =>
       await TeamWorkflow.getTeam(teamId))
     )).filter((team) => !!team);
-    if(teams.length == 2){
+
+    const players = (await Promise.all(teams.map(async team => await PlayerWorkflow.getPlayersByTeamId(team.id)))).flat();
+
+    if (teams.length == 2) {
       return {
         props: {
           season,
           match,
-          teams
+          teams,
+          players
         },
       };
     }

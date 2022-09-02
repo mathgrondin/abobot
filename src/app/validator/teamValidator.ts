@@ -8,27 +8,27 @@ const TeamRequestError_SeasonNotFound = (seasonId: string) => new ApiError(404, 
 const TeamRequestError_AlreadyExists = (name: string, seasonId: string) => new ApiError(404, `Team with name '${name}' already exists in season '${seasonId}'`);
 
 export async function ValidateNewTeam(teamCandidate: Team){
-    const { name = undefined, seasonId = undefined, iconPath = undefined } = teamCandidate;
-    if(name == null || name.length === 0){
-        throw TeamRequestError_CreateTeamMissingParameters('name');  
-    }
+  const { name = undefined, seasonId = undefined, iconPath = undefined } = teamCandidate;
+  if(name == null || name.length === 0){
+    throw TeamRequestError_CreateTeamMissingParameters('name');  
+  }
 
-    if(iconPath == null || iconPath.length === 0){
-        throw TeamRequestError_CreateTeamMissingParameters('iconPath');  
-    }
+  if(iconPath == null || iconPath.length === 0){
+    throw TeamRequestError_CreateTeamMissingParameters('iconPath');  
+  }
 
-    if(seasonId == null || seasonId.length === 0){
-        throw TeamRequestError_CreateTeamMissingParameters('seasonId');  
-    }
+  if(seasonId == null || seasonId.length === 0){
+    throw TeamRequestError_CreateTeamMissingParameters('seasonId');  
+  }
 
-    const season = await SeasonWorkflow.getSeason(seasonId);
-    if(season == null){
-        throw TeamRequestError_SeasonNotFound(seasonId);  
-    }
+  const season = await SeasonWorkflow.getSeason(seasonId);
+  if(season == null){
+    throw TeamRequestError_SeasonNotFound(seasonId);  
+  }
 
-    const teams = await TeamWorkflow.getTeamsByName(name);
-    if(teams != null && teams.some(team => team.seasonId === seasonId)){
-        throw TeamRequestError_AlreadyExists(name, seasonId);  
-    }
+  const teams = await TeamWorkflow.getTeamsByName(name);
+  if(teams != null && teams.some(team => team.seasonId === seasonId)){
+    throw TeamRequestError_AlreadyExists(name, seasonId);  
+  }
 
 }
