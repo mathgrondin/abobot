@@ -24,10 +24,10 @@ const TeamRequestError_TeamNotFound = () => new ApiError(404, 'Team not found');
 *         description: 
 */
 export async function getTeam(request: NextApiRequest): Promise<Team> {
-    const teamId = request.query.teamId as string;
-    const team = await TeamWorkflow.getTeam(teamId);
-    if(team == null){
-        throw TeamRequestError_TeamNotFound();
-    }
-    return team;
+  const teamId = request.query.teamId as string;
+  const team = await TeamWorkflow.getTeam(teamId);
+  if(team == null){
+    throw TeamRequestError_TeamNotFound();
+  }
+  return team;
 }
