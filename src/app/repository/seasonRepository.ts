@@ -9,49 +9,49 @@ export type Season = {
 }
 
 function getSeason(seasonId: string): Promise<Season | undefined> {
-    return Promise.resolve()
-        .then(() => readCollection(SEASONS_COLLECTION_ID))
-        .then(collectionSnapshot => {
-            const seasonSnapshot = collectionSnapshot.docs.find(document => document.id === seasonId);
-            if (!seasonSnapshot) {
-                return undefined;
-            }
-            const season = seasonSnapshot.data() as Season;
-            return season;
-        });
+  return Promise.resolve()
+    .then(() => readCollection(SEASONS_COLLECTION_ID))
+    .then(collectionSnapshot => {
+      const seasonSnapshot = collectionSnapshot.docs.find(document => document.id === seasonId);
+      if (!seasonSnapshot) {
+        return undefined;
+      }
+      const season = seasonSnapshot.data() as Season;
+      return season;
+    });
 }
 
 function getAllSeasons(): Promise<Season[]> {
-    return Promise.resolve()
-        .then(() => readCollection(SEASONS_COLLECTION_ID))
-        .then(collectionSnapshot => {
-            return collectionSnapshot.docs.map(document => document.data() as Season);
-        });
+  return Promise.resolve()
+    .then(() => readCollection(SEASONS_COLLECTION_ID))
+    .then(collectionSnapshot => {
+      return collectionSnapshot.docs.map(document => document.data() as Season);
+    });
 }
 
 function updateSeason(season: Season): Promise<Season | undefined> {
-    return Promise.resolve()
-        .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, { ...season }))
-        .then(() => season);
+  return Promise.resolve()
+    .then(() => updateDocument(SEASONS_COLLECTION_ID, season.id, { ...season }))
+    .then(() => season);
 }
 
 function createSeason(seasonId: string): Promise<Season | undefined> {
-    const season: Season = {
-        id: seasonId,
-        matchIds: [],
-        teamIds: []
-    };
+  const season: Season = {
+    id: seasonId,
+    matchIds: [],
+    teamIds: []
+  };
 
-    return Promise.resolve()
-        .then(() => writeDocument(SEASONS_COLLECTION_ID, seasonId, season))
-        .then(() => season);
+  return Promise.resolve()
+    .then(() => writeDocument(SEASONS_COLLECTION_ID, seasonId, season))
+    .then(() => season);
 }
 
 const SeasonRepository = {
-    getSeason,
-    getAllSeasons,
-    updateSeason,
-    createSeason,
+  getSeason,
+  getAllSeasons,
+  updateSeason,
+  createSeason,
 };
 
 export default SeasonRepository;

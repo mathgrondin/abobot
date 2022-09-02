@@ -11,27 +11,27 @@ export const InvalidNewMatchQuery_TeamNotPlayingThisSeason = (teamId: string, se
 export const InvalidNewMatchQuery_MatchAlreadyExists = (): ApiError => new ApiError(400, 'Match already exists');
 
 export function validateNewMatch(matchId: number, teamIds: string[], season: Season){
-    if(teamIds.length != 2){
-        throw InvalidNewMatchQuery_LenghtMustBeTwo(teamIds.length);
-    }
+  if(teamIds.length != 2){
+    throw InvalidNewMatchQuery_LenghtMustBeTwo(teamIds.length);
+  }
 
-    const teamA = teamIds[A_TEAM_INDEX];
-    const teamB = teamIds[B_TEAM_INDEX];
-    if(teamA == null || teamB == null){
-        throw InvalidNewMatchQuery_MustNotBeNull();
-    }
+  const teamA = teamIds[A_TEAM_INDEX];
+  const teamB = teamIds[B_TEAM_INDEX];
+  if(teamA == null || teamB == null){
+    throw InvalidNewMatchQuery_MustNotBeNull();
+  }
 
-    if(teamA == teamB){
-        throw InvalidNewMatchQuery_MustNotBeEqual();
-    }
+  if(teamA == teamB){
+    throw InvalidNewMatchQuery_MustNotBeEqual();
+  }
 
-    teamIds.forEach((teamId) => {
-        if(!season.teamIds.includes(teamId)){
-            throw InvalidNewMatchQuery_TeamNotPlayingThisSeason(teamId, season.id);
-        }
-    });
-
-    if(season.matchIds.includes(`${matchId}`)){
-        throw InvalidNewMatchQuery_MatchAlreadyExists();
+  teamIds.forEach((teamId) => {
+    if(!season.teamIds.includes(teamId)){
+      throw InvalidNewMatchQuery_TeamNotPlayingThisSeason(teamId, season.id);
     }
+  });
+
+  if(season.matchIds.includes(`${matchId}`)){
+    throw InvalidNewMatchQuery_MatchAlreadyExists();
+  }
 }
