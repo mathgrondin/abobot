@@ -38,11 +38,13 @@ async function createMatch(teamIds: string[]): Promise<Match> {
 async function addMessage(userId: string, message: string) {
   const currentMatchId = getCurrentMatchId();
   const currentMatch = await getMatch(currentMatchId);
+  console.log('currentMatch', currentMatch.id);
   if (currentMatch == null) {
     return;
   }
 
   const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
+  console.log('playerId', playerId);
   if (playerId) {
     if (!currentMatch.messages[userId]) {
       currentMatch.messages[userId] = [];

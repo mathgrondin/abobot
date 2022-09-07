@@ -47,9 +47,9 @@ export default function NewMatch({ season, teams }: props) {
       router.push(`/season/${season.id}`);
       return;
     }
-    setLoading(false);    
     const {message} = await response.json();
     alert(message);    
+    setLoading(false);    
   };
 
   return (

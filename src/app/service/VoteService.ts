@@ -35,10 +35,11 @@ function onNewMessage(match: Match, userId: string, message: string): Promise<st
       if (!playerId) {
         return [getPlayerNotFoundMessage()];
       }
-      if (!match.messages[playerId]) {
-        match.messages[playerId] = [];
+      if (!match.messages[userId]) {
+        match.messages[userId] = [];
       }
       const previousVotes = match.messages[userId];
+      console.log('previousVotes', previousVotes);
       if (previousVotes.includes(playerId)) {
         return [getDuplicateErrorMessage()];
       }
