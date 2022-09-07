@@ -26,7 +26,7 @@ function compileVotes(match: Match, teams: Team[], players: Player[]): Star[]{
       if(i > 3){
         return;
       }
-      const player = players.find(p => p.alias.includes(v));
+      const player = players.find(p => p.id === v);
       if(!player){
         console.error(`"${v}" does not match any player`);
       }
@@ -46,7 +46,6 @@ function compileVotes(match: Match, teams: Team[], players: Player[]): Star[]{
 }
 
 export default function StarResult({season, match, teams, players}: props) {
-  console.log(players, teams, match);
 
   if(Object.keys(match.messages).length == 0){
     return (
