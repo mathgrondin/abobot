@@ -1,10 +1,11 @@
+import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply } from '../../helpers/replyHelper';
 import { Match } from '../repository/matchRepository';
 import { Player } from '../repository/playerRepository';
 import { Team } from '../repository/teamRepository';
 import PlayerWorkflow from '../workflow/playerWorkflow';
 import TeamWorkflow from '../workflow/teamWorkflow';
 
-function processMessage(match: Match, userId: string, message: string): Promise<string | undefined> {
+function getPlayersByMatch(match: Match): Promise<Player[]> {
   return Promise.resolve()
     .then(async () => {
       const teamA = await TeamWorkflow.getTeam(match.teamIds[0]);
@@ -12,22 +13,42 @@ function processMessage(match: Match, userId: string, message: string): Promise<
       return [teamA, teamB];
     })
     .then(async ([teamA, teamB]: Team[]) => {
-      const players = (await Promise.all([...teamA.playerIds, ...teamB.playerIds].map(async (playerId) => 
+      const players = (await Promise.all([...teamA.playerIds, ...teamB.playerIds].map(async (playerId) =>
         await PlayerWorkflow.getPlayer(playerId)
       )));
       return players;
-    })
+    });
+}
+
+function onNewMessage(match: Match, userId: string, message: string): Promise<string[]> {
+  return getPlayersByMatch(match)
     .then(async (players: Player[]) => {
-      const votedPlayer = players.find((p) => p.name === message);
-      if(votedPlayer){
-        return 'next vote plz';
+      const votedPlayer = players.find((p) =>
+        p.alias.find(a => a === message)
+      );
+      if (votedPlayer) {
+        return votedPlayer.id;
       }
       return undefined;
+    })
+    .then((playerId: string): string[] | undefined => {
+      if (!playerId) {
+        return [getPlayerNotFoundMessage()];
+      }
+      if (!match.messages[userId]) {
+        match.messages[userId] = [];
+      }
+      const previousVotes = match.messages[userId];
+      console.log('previousVotes', previousVotes);
+      if (previousVotes.includes(playerId)) {
+        return [getDuplicateErrorMessage()];
+      }
+      return [getReply(previousVotes.length), playerId];
     });
 }
 
 const VoteService = {
-  processMessage
+  onNewMessage
 };
 
 export default VoteService;
