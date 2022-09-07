@@ -12,7 +12,7 @@ export type props = {
 export default function TeamSelector({teams, setSelectedTeamId, selectedTeamId}: props) {
   const toTeam = (team: Team) => {
     return (
-      <div className={selectedTeamId == team.id ? styles.SelectedTeam : styles.Team} onClick={() => setSelectedTeamId(team.id)}>
+      <div key={team.id} className={selectedTeamId == team.id ? styles.SelectedTeam : styles.Team} onClick={() => setSelectedTeamId(team.id)}>
         <Image src={team.iconPath} alt={team.name} layout='fill'/>
       </div>
     );

@@ -38,20 +38,21 @@ async function createMatch(teamIds: string[]): Promise<Match> {
 async function addMessage(userId: string, message: string) {
   const currentMatchId = getCurrentMatchId();
   const currentMatch = await getMatch(currentMatchId);
+  console.log('currentMatch', currentMatch.id);
   if (currentMatch == null) {
     return;
   }
 
-  const reply = await VoteService.processMessage(currentMatch, userId, message);
-  if (reply) {
-    currentMatch.messages[userId].push(message);
+  const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
+  console.log('playerId', playerId);
+  if (playerId) {
+    if (!currentMatch.messages[userId]) {
+      currentMatch.messages[userId] = [];
+    }
+    currentMatch.messages[userId].push(playerId);
     await updateMatch(currentMatch);
-    await MessengerService.sendMessage(userId, reply);
-    return;
   }
-
-  const errorMessage = 'TODO: get a meaningful error message';
-  await MessengerService.sendMessage(userId, errorMessage);
+  await MessengerService.sendMessage(userId, reply);
 }
 
 const updateMatch = (match: Match): Promise<Match> => {
