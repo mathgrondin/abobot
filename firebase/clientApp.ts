@@ -7,4 +7,5 @@ initializeApp({
   projectId: process.env.FIREBASE_PROJECT_ID,
 });
 
+
 export const db = getFirestore();
