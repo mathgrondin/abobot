@@ -29,6 +29,11 @@ const thirdStar = [
   'On va faire ça short & sweet! Pour voter, tu peux m\'écrire le nom (ou le numéro et la couleur de chandail) de tes choix. À qui décernes-tu la Troisième Étoile? '
 ];
 
+export function getThirdStarMessage(): string {
+  const randomIndex = Math.floor(Math.random() * thirdStar.length);
+  return thirdStar[randomIndex];
+}
+
 const secondStar = [
   'Bien vu! Quel est ton choix pour la 2e?',
   'Parfait! Ta 2e Étoile?',
