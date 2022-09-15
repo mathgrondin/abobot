@@ -31,8 +31,6 @@ function sendMessage(userId: string, message: string): Promise<void> {
           }),
         }
       );
-
-      console.log('response', response.status, userId, message);
     });
 }
 

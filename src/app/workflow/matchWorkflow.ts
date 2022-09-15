@@ -38,13 +38,13 @@ async function createMatch(teamIds: string[]): Promise<Match> {
 async function addMessage(userId: string, message: string) {
   const currentMatchId = getCurrentMatchId();
   const currentMatch = await getMatch(currentMatchId);
-  console.log('currentMatch', currentMatch.id);
   if (currentMatch == null) {
-    return;
+    // Hotfix tp create a game to get the facebook approval
+    MatchWorkflow.createMatch(['cd74fc1b-cff5-4cf3-9f8b-5c4133c34848','0c6c0439-7972-4104-9813-5cd0abc02415'])
+    // return;
   }
 
   const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
-  console.log('playerId', playerId);
   if (playerId) {
     if (!currentMatch.messages[userId]) {
       currentMatch.messages[userId] = [];
