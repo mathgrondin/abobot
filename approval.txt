@@ -1,0 +1,8 @@
+1. Go the the chat page with the "L'Abordage Sherbrooke" page (m.me)
+2. Start the voting process with the following message: Claude
+3. Wait for the reply.
+4. After receving the reply, send the following message: Fred
+5. Wait for the reply.
+6. After receiving the reply, send the following message: Luc
+
+Audiance can only vote for 3 players. No other message will be accepted

@@ -39,7 +39,6 @@ function onNewMessage(match: Match, userId: string, message: string): Promise<st
         match.messages[userId] = [];
       }
       const previousVotes = match.messages[userId];
-      console.log('previousVotes', previousVotes);
       if (previousVotes.includes(playerId)) {
         return [getDuplicateErrorMessage()];
       }
