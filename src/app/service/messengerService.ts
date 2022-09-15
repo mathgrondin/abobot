@@ -32,13 +32,9 @@ function sendMessage(userId: string, message: string): Promise<void> {
         if(response.status != 200){
           process.stdout.write(`Error sending message: ${response.status}`);
         }
-<<<<<<< HEAD
-      );
-=======
       } catch (e){
         process.stdout.write(`Error sending message: ${e.message}`);
       }
->>>>>>> da6a8fc (use vote)
     });
 }
 
