@@ -76,9 +76,7 @@ const conclusion = [
 
 function getReplyFromCount(count: number){
   switch(count){
-  case 0: return secondStar;
-  case 1: return firstStar;
-  case 2: return conclusion;
+  case 0: return conclusion;
   }
 }
 
