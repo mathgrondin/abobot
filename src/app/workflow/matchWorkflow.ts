@@ -7,6 +7,8 @@ import { validateNewMatch } from '../validator/matchValidator';
 import VoteService from '../service/VoteService';
 import MessengerService from '../service/messengerService';
 
+const MAX_VOTE_COUNT = 1;
+
 const MatchWorkflowError_InvalidMatchId = () => new ApiError(404, 'Invalid match id');
 const MatchWorkflowError_NoMatchAtTheMoment = () => new ApiError(405, 'Not match started at the moment. Please try again');
 const MatchWorkflowError_SeasonNotFound = () => new ApiError(405, 'No season found, create a season first');
@@ -39,7 +41,7 @@ async function addMessage(userId: string, message: string) {
   const currentMatchId = getCurrentMatchId();
   const currentMatch = await getMatch(currentMatchId);
   if (currentMatch == null) {
-    await createMatch(['0c6c0439-7972-4104-9813-5cd0abc02415', 'cd74fc1b-cff5-4cf3-9f8b-5c4133c34848']);
+    throw MatchWorkflowError_NoMatchAtTheMoment();
   }
 
   const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
@@ -48,10 +50,16 @@ async function addMessage(userId: string, message: string) {
     if (!currentMatch.messages[userId]) {
       currentMatch.messages[userId] = [];
     }
+    if(currentMatch.messages[userId].length >= MAX_VOTE_COUNT){
+      // user already voted
+      return;
+    }
     currentMatch.messages[userId].push(playerId);
     await updateMatch(currentMatch);
   }
-  await MessengerService.sendMessage(userId, reply);
+  if(reply){
+    await MessengerService.sendMessage(userId, reply);
+  }
 }
 
 const updateMatch = (match: Match): Promise<Match> => {
