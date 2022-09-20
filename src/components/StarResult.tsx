@@ -17,13 +17,15 @@ type Star = {
     score: number
 }
 
+const MAX_VOTE_COUNT = 1;
+
 function compileVotes(match: Match, teams: Team[], players: Player[]): Star[]{
   const stars: Star[] = [];
   const {messages} = match;
   Object.values(messages).forEach(votes => {
     votes.forEach((v, i) => {
       // 3 votes max
-      if(i > 3){
+      if(i > MAX_VOTE_COUNT){
         return;
       }
       const player = players.find(p => p.id === v);
@@ -35,11 +37,11 @@ function compileVotes(match: Match, teams: Team[], players: Player[]): Star[]{
         stars.push( {
           id: player.id,
           name: player.name,
-          score: 3 - i,
+          score: MAX_VOTE_COUNT - i,
         });
-        return;
+      } else {
+        stars[playerIndex].score += MAX_VOTE_COUNT - i;
       }
-      stars[playerIndex].score += 3 - i;
     });
   });
   return stars;
