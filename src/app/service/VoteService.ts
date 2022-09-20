@@ -1,4 +1,4 @@
-import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply } from '../../helpers/replyHelper';
+import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply, getThirdStarMessage } from '../../helpers/replyHelper';
 import { Match } from '../repository/matchRepository';
 import { Player } from '../repository/playerRepository';
 import { Team } from '../repository/teamRepository';
@@ -21,6 +21,9 @@ function getPlayersByMatch(match: Match): Promise<Player[]> {
 }
 
 function onNewMessage(match: Match, userId: string, message: string): Promise<string[]> {
+  if(!match.messages[userId] && message.toLowerCase() === 'vote'){
+    return Promise.resolve().then(() => [getThirdStarMessage()])
+  }
   return getPlayersByMatch(match)
     .then(async (players: Player[]) => {
       const votedPlayer = players.find((p) =>
