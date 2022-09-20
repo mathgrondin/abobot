@@ -39,7 +39,7 @@ async function addMessage(userId: string, message: string) {
   const currentMatchId = getCurrentMatchId();
   const currentMatch = await getMatch(currentMatchId);
   if (currentMatch == null) {
-    await createMatch(['0c6c0439-7972-4104-9813-5cd0abc02415', 'cd74fc1b-cff5-4cf3-9f8b-5c4133c34848']);
+    throw MatchWorkflowError_NoMatchAtTheMoment();
   }
 
   const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
@@ -51,7 +51,9 @@ async function addMessage(userId: string, message: string) {
     currentMatch.messages[userId].push(playerId);
     await updateMatch(currentMatch);
   }
-  await MessengerService.sendMessage(userId, reply);
+  if(reply){
+    await MessengerService.sendMessage(userId, reply);
+  }
 }
 
 const updateMatch = (match: Match): Promise<Match> => {
