@@ -1,6 +1,6 @@
 import { ApiError } from 'next/dist/server/api-utils';
 import PlayerRepository, { Player } from '../repository/playerRepository';
-import { validateNewPlayer } from '../validator/playerValidator';
+import { validateNewPlayer, validateUpdatedPlayer } from '../validator/playerValidator';
 import TeamWorkflow from './teamWorkflow';
 
 const PlayerWorkflowError_InvalidTeamId = () => new ApiError(404, 'Invalid team id');
@@ -31,8 +31,11 @@ async function createPlayer(playerCandidate: Player): Promise<Player | undefined
     .then(async () => await PlayerRepository.createPlayer(playerCandidate));
 }
 
-const updatePlayer = (): Promise<Player | undefined> => {
-  return undefined;
+async function updatePlayer(playerCandidate: Player): Promise<Player | undefined> {
+  return Promise.resolve()
+     .then(async () => await getPlayer(playerCandidate.id))
+     .then(async (player) => validateUpdatedPlayer(player, playerCandidate))
+     .then(async () => await PlayerRepository.updatePlayer(playerCandidate))
 };
 
 const deletePlayer = (): Promise<Player | undefined> => {
