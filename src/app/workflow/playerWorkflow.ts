@@ -34,7 +34,7 @@ async function createPlayer(playerCandidate: Player): Promise<Player | undefined
 async function updatePlayer(playerCandidate: Player): Promise<Player | undefined> {
   return Promise.resolve()
      .then(async () => await getPlayer(playerCandidate.id))
-     .then(async (player) => validateUpdatedPlayer(player, playerCandidate))
+     .then(async (player) => await validateUpdatedPlayer(player, playerCandidate))
      .then(async () => await PlayerRepository.updatePlayer(playerCandidate))
 };
 
