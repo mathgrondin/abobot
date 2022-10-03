@@ -1,0 +1,1 @@
+export const getSeasonDisplayName = (seasonId: string) => seasonId.slice(0, 4) + ' - ' + seasonId.slice(4);

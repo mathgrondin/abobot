@@ -1,0 +1,22 @@
+.ShadowButtonlabel{
+    box-sizing: border-box;
+    padding: 1.6rem;
+    background-color: #fff;
+    border-radius: 3.2rem;
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.25);
+    border: none;
+    font-size: 1.6rem;
+    // transition: all 0.2s ease-in-out;
+    border: #fff 0.2rem solid;
+    &:hover{
+        cursor: pointer;
+    }
+    &:active{
+        opacity: 0.5;
+    }
+}
+
+.SelectedShadowButtonlabel{
+    @extend .ShadowButtonlabel;
+    border: #000 0.2rem solid;
+}

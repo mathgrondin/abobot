@@ -1,28 +1,23 @@
-# ABOBOT
-Un bot messenger pour comptabiliser les votes des étoiles
+# Redux Toolkit TypeScript Example
 
-## Local setup
-### Python
-Sur windows
-```sh
-choco install python
-pip3 install --user virtualenv
-.\env\Scripts\activate.bat
-py -m pip install --upgrade pip --user
-py -m pip install -r requirements.txt --user
+This example shows how to integrate Next.js with [Redux Toolkit](https://redux-toolkit.js.org).
+
+The **Redux Toolkit** is a standardized way to write Redux logic (create actions and reducers, setup the store with some default middlewares like redux devtools extension). This example demonstrates each of these features with Next.js
+
+## Deploy your own
+
+Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-redux&project-name=with-redux&repository-name=with-redux)
+
+## How to use
+
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+
+```bash
+npx create-next-app --example with-redux with-redux-app
+# or
+yarn create next-app --example with-redux with-redux-app
 ```
 
-### Docker
-
-build
-```sh
-docker build -t gcr.io/serene-foundry-234719/abobot:latest . 
-```
-run
-```sh
-docker run -d -p 80:80 gcr.io/serene-foundry-234719/abobot:latest
-```
-push
-```sh
-docker push gcr.io/serene-foundry-234719/abobot:latest
-```
+Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).

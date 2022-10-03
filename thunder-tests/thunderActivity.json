@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "5fdaf424-7f11-4335-99d2-f00befcdf804",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/player",
+    "url": "http://localhost:3000/api/player?playerId=15f3619b-0bee-45e4-b86e-ec492ff44911",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2022-09-25T19:50:01.156Z",
+    "modified": "2022-09-25T19:58:26.386Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "playerId",
+        "value": "15f3619b-0bee-45e4-b86e-ec492ff44911",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{}",
+      "form": []
+    },
+    "tests": []
+  }
+]

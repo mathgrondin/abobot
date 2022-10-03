@@ -1,8 +1,5 @@
 {
-    "python.linting.pylintEnabled": true,
-    "python.pythonPath": "C:\\Python37\\python.exe",
-    "python.linting.pycodestyleEnabled": false,
-    "python.linting.enabled": true,
-    "python.linting.banditEnabled": false,
-    "python.formatting.provider": "yapf"
+  "cSpell.words": [
+    "Matchs"
+  ]
 }
