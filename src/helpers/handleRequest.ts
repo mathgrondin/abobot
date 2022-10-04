@@ -8,8 +8,8 @@ export async function handleRequest(response: NextApiResponse, apiFunction: () =
         if (error instanceof ApiError) {
             const apiError = (error as ApiError);
             console.error(apiError.message);
-            return response.status(apiError.statusCode).json({
-                message: apiError.message
+            return response.status(200).json({
+                message: apiError.statusCode + " - " + apiError.message
             });
         }
     }
