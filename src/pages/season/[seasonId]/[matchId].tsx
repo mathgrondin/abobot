@@ -25,7 +25,6 @@ type props = {
 }
 
 export default function MatchScreen({ season, match, teams, players }: props) {
-
   return (
     <Screen>
       <div>

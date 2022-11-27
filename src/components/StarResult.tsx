@@ -3,6 +3,7 @@ import { Match } from '../app/repository/matchRepository';
 import { Player } from '../app/repository/playerRepository';
 import { Season } from '../app/repository/seasonRepository';
 import { Team } from '../app/repository/teamRepository';
+import styles from './StarResult.module.scss'
 
 type props = {
   season: Season,
@@ -14,7 +15,8 @@ type props = {
 type Star = {
     id: string,
     name: string,
-    score: number
+    score: number,
+    team: string
 }
 
 const MAX_VOTE_COUNT = 1;
@@ -34,10 +36,12 @@ function compileVotes(match: Match, teams: Team[], players: Player[]): Star[]{
       }
       const playerIndex = stars.findIndex(s => s.id === player.id);
       if(playerIndex < 0){
+        const team = teams.find(m => m.playerIds.includes(player.id));
         stars.push( {
           id: player.id,
           name: player.name,
           score: MAX_VOTE_COUNT - i,
+          team: team.name
         });
       } else {
         stars[playerIndex].score += MAX_VOTE_COUNT - i;
@@ -55,11 +59,12 @@ export default function StarResult({season, match, teams, players}: props) {
     );
   }
 
-  const stars = compileVotes(match, teams, players);
+  const stars = compileVotes(match, teams, players).sort((a,b) => b.score - a.score);
 
   const Star = ({star}: {star: Star}) => {
     return (
-      <div>
+      <div className={styles.Star}>
+        <div className={styles[star.team]}/>
         <p>{star.name} : {star.score}</p>
       </div>
     );

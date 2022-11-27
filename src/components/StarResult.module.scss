@@ -1,0 +1,61 @@
+.Star{
+    padding: 1.6rem;
+    border-radius: 3.2rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .Vert{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 3.2rem;
+        background-color: #3EDF9C;
+        margin-right: 0.8rem;
+    }
+
+    .Blanc{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 3.2rem;
+        background-color: #F5F5F5;
+        margin-right: 0.8rem;
+    }
+
+    .Bleu{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 3.2rem;
+        background-color: #5685FF;
+        margin-right: 0.8rem;
+    }
+
+    .Rouge{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 3.2rem;
+        background-color: #FF4A5D;
+        margin-right: 0.8rem;
+    }
+}
+
+// .MatchCardTeamRouge{
+//     @extend .MatchCardTeam;
+//     background-color: #FF4A5D;
+// }
+
+// .MatchCardTeamBleu{
+//     @extend .MatchCardTeam;
+//     background-color: #5685FF;
+// }
+
+// .MatchCardTeamVert{
+//     @extend .MatchCardTeam;
+//     background-color: #3EDF9C;
+// }
+
+// .MatchCardTeamBlanc{
+//     @extend .MatchCardTeam;
+//     background-color: #F5F5F5;
+// }
