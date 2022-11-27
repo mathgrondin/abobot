@@ -5,7 +5,7 @@ export type props = {
     teams: Team[]
 }
 
-export default function TeamsView() {
+export default function TeamsView({teams}: props) {
   return (
     <div>TeamsView</div>
   );
