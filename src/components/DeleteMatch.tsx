@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import ShadowButtonLabel from './ShadowButtonLabel';
+import ShadowButtonLabel from './ShadowButtonLabel';
 import styles from './DeleteMatch.module.scss';
 import { useRouter } from 'next/router';
 
@@ -22,9 +22,9 @@ export default function DeleteMatch({ seasonId, matchId }: props) {
 
   return (
     <div className={styles.DeleteMatch}>
-      <button onClick={deleteMatch} disabled={isDeleting}>
-        {isDeleting ? 'Deleting...' : 'Delete Match'}
-      </button>
+      <ShadowButtonLabel onClick={deleteMatch} disabled={isDeleting}
+        label={isDeleting ? 'Deleting...' : 'Delete Match'}
+      />
     </div>
   );
 }
