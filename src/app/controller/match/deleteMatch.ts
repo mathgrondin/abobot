@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import MatchWorkflow from "../../workflow/matchWorkflow"
+import { NextApiRequest } from "next"
 
 /**
  * @swagger
@@ -19,11 +19,8 @@ import MatchWorkflow from "../../workflow/matchWorkflow"
  *       }
  *     ],
  *     responses: {
- *       '204': {
- *         description: 'The match was successfully deleted'
- *       },
- *       '404': {
- *         description: 'A match with the specified ID was not found'
+ *       '200': {
+ *         description: 'Operation result'
  *       }
  *     }
  *   }
