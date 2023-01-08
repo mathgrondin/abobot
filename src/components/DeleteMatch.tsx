@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import ShadowButtonLabel from './ShadowButtonLabel';
 import styles from './DeleteMatch.module.scss';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 type props = { seasonId: string, matchId: string }
 
