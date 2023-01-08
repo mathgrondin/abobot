@@ -10,6 +10,7 @@ import MessengerService from '../service/messengerService';
 const MAX_VOTE_COUNT = 1;
 
 const MatchWorkflowError_InvalidMatchId = () => new ApiError(404, 'Invalid match id');
+const MatchWorkflowError_NotFound = () => new ApiError(404, 'A match with the specified ID was not found');
 const MatchWorkflowError_NoMatchAtTheMoment = () => new ApiError(405, 'Not match started at the moment. Please try again');
 const MatchWorkflowError_SeasonNotFound = () => new ApiError(405, 'No season found, create a season first');
 
@@ -62,16 +63,27 @@ async function addMessage(userId: string, message: string) {
   }
 }
 
-const updateMatch = (match: Match): Promise<Match> => {
+async function updateMatch(match: Match): Promise<Match>{
   return MatchRepository.updateMatch(match);
 };
 
-const deleteMatch = (): Promise<Match | undefined> => {
-  return undefined;
-};
+async function deleteMatch(matchId: number): Promise<void>{
+  const match = await getMatch(matchId);
+  if (match == null) {
+    throw MatchWorkflowError_NotFound();
+  }
+  // Remove match from season
+  const seasonId = getSeasonIdFromMatchId(matchId);
+  const season = await SeasonWorkflow.getSeason(seasonId);
+  const matchIdString = `${matchId}`;
+  if (season != null) {
+    const updatedMatchIds = season.matchIds.filter((id) => id !== matchIdString);
+    season.matchIds = updatedMatchIds;
+    await SeasonWorkflow.updateSeason(season);
+  }
 
-// TODO
-// export function deleteMatch()
+  return MatchRepository.deleteMatch(`${matchId}`)
+};
 
 const MatchWorkflow = {
   getMatch,

@@ -1,15 +1,15 @@
-import { readCollection, updateDocument, writeDocument } from '../../../firebase/firestoreHelper';
+import { deleteDocument, readCollection, updateDocument, writeDocument } from '../../../firebase/firestoreHelper';
 
 export type Match = {
-    id: string
-    teamIds: string[],
-    score: {
-        teamA: number,
-        teamB: number,
-    },
-    messages: {
-        [userId: string]: string[]
-    }
+  id: string
+  teamIds: string[],
+  score: {
+    teamA: number,
+    teamB: number,
+  },
+  messages: {
+    [userId: string]: string[]
+  }
 }
 
 const MATCHS_COLLECTION_ID = 'matchs';
@@ -19,7 +19,7 @@ function getMatch(matchId: string): Promise<Match | undefined> {
     .then(() => readCollection(MATCHS_COLLECTION_ID))
     .then(collectionSnapshot => {
       const matchSnapshot = collectionSnapshot.docs.find(document => document.id === matchId);
-      if(!matchSnapshot){
+      if (!matchSnapshot) {
         return undefined;
       }
       const match = matchSnapshot.data() as Match;
@@ -45,14 +45,21 @@ function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefi
 
 function updateMatch(match: Match): Promise<Match | undefined> {
   return Promise.resolve()
-    .then(() => updateDocument(MATCHS_COLLECTION_ID, match.id, {...match}))
+    .then(() => updateDocument(MATCHS_COLLECTION_ID, match.id, { ...match }))
     .then(() => match);
+}
+
+
+function deleteMatch(matchId: string): Promise<void> {
+  return Promise.resolve()
+    .then(() => deleteDocument(MATCHS_COLLECTION_ID, matchId));
 }
 
 const MatchRepository = {
   getMatch,
   createMatch,
-  updateMatch
+  updateMatch,
+  deleteMatch
 };
 
 export default MatchRepository;

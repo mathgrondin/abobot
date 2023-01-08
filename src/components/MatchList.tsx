@@ -1,5 +1,5 @@
 import React from 'react';
-import ShadowButtonlabel from './ShadowButtonlabel';
+import ShadowButtonLabel from './ShadowButtonLabel';
 import styles from './MatchList.module.scss';
 import { Match } from '../app/repository/matchRepository';
 import { Team } from '../app/repository/teamRepository';
@@ -26,7 +26,7 @@ export default function MatchList({ matches, teams, seasonId }: props) {
     );
   };
   
-  const CreateMatch = () => <ShadowButtonlabel label='New Match' onClick={() => router.push(`/match/new?seasonId=${seasonId}`)}/>;
+  const CreateMatch = () => <ShadowButtonLabel label='New Match' onClick={() => router.push(`/match/new?seasonId=${seasonId}`)}/>;
   
   // sort by date descending
   matches.sort((a,b) => parseInt(b.id) - parseInt(a.id));

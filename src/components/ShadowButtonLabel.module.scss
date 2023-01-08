@@ -1,4 +1,4 @@
-.ShadowButtonlabel{
+.ShadowButtonLabel{
     box-sizing: border-box;
     padding: 1.6rem;
     background-color: #fff;
@@ -16,7 +16,7 @@
     }
 }
 
-.SelectedShadowButtonlabel{
-    @extend .ShadowButtonlabel;
+.SelectedShadowButtonLabel{
+    @extend .ShadowButtonLabel;
     border: #000 0.2rem solid;
 }

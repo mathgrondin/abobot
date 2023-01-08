@@ -3,7 +3,7 @@ import React from 'react';
 import { Season } from '../app/repository/seasonRepository';
 import { useGetAllSeasons } from '../hooks/useGetAllSeasons';
 import styles from './SeasonSelector.module.scss';
-import ShadowButtonlabel from './ShadowButtonlabel';
+import ShadowButtonLabel from './ShadowButtonLabel';
 
 export default function SeasonSelector() {
   const { allSeasons, error, isLoading } = useGetAllSeasons();
@@ -17,7 +17,7 @@ export default function SeasonSelector() {
       {error && <div>{error}</div>}
       {allSeasons?.length > 0 &&
         <div>{allSeasons.map(season => 
-          <ShadowButtonlabel 
+          <ShadowButtonLabel 
             key={season.id}
             label={getSeasonDisplay(season)}
             onClick={() => router.push(`/season/${season.id}`)}
