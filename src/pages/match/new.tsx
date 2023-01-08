@@ -8,7 +8,7 @@ import Screen from '../../components/Screen';
 import ScreenSubtitle from '../../components/ScreenSubtitle';
 import ScreenTitle from '../../components/ScreenTitle';
 import Separator from '../../components/Separator';
-import ShadowButtonlabel from '../../components/ShadowButtonlabel';
+import ShadowButtonLabel from '../../components/ShadowButtonLabel';
 import TeamSelector from '../../components/TeamSelector';
 import { getCurrentMatchId } from '../../helpers/getCurrentMatchId';
 import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
@@ -63,7 +63,7 @@ export default function NewMatch({ season, teams }: props) {
           <TeamSelector teams={teams} setSelectedTeamId={(candidate: string) => validateTeamCandidate(candidate, teamB, setTeamA)} selectedTeamId={teamA} />
           <ScreenSubtitle subtitle={'VS'} />
           <TeamSelector teams={teams} setSelectedTeamId={(candidate: string) => validateTeamCandidate(candidate, teamA, setTeamB)} selectedTeamId={teamB} />
-          <ShadowButtonlabel label='Start' onClick={startMatch} />
+          <ShadowButtonLabel label='Start' onClick={startMatch} />
         </>}
       </div>
     </Screen>
