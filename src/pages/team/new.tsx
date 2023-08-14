@@ -1,9 +1,9 @@
-import { GetServerSideProps } from "next";
-import React from "react";
-import Screen from "../../components/Screen";
-import ScreenTitle from "../../components/ScreenTitle";
-import { getSeasonDisplayName } from "../../helpers/getSeasonDisplayName";
-import ScreenSubtitle from "../../components/ScreenSubtitle";
+import { GetServerSideProps } from 'next';
+import React from 'react';
+import Screen from '../../components/Screen';
+import ScreenTitle from '../../components/ScreenTitle';
+import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
+import ScreenSubtitle from '../../components/ScreenSubtitle';
 
 export type props = {
   seasonId: string;
@@ -15,7 +15,7 @@ export default function NewTeam({ seasonId }: props) {
   return (
     <Screen>
       <ScreenTitle title={seasonDisplayName} />
-      <ScreenSubtitle subtitle={"New Team"} />
+      <ScreenSubtitle subtitle={'New Team'} />
       <form>
         <div>
           <p>Name</p>

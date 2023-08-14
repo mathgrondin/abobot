@@ -1,9 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { Team } from "../app/repository/teamRepository";
-import styles from "./TeamsView.module.scss";
-import { useRouter } from "next/router";
-import ShadowButton from "./ShadowButton";
+import React from 'react';
+import Image from 'next/image';
+import { Team } from '../app/repository/teamRepository';
+import styles from './TeamsView.module.scss';
+import { useRouter } from 'next/router';
+import ShadowButton from './ShadowButton';
 
 export type props = {
   teams: Team[];
