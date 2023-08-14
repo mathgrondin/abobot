@@ -1,4 +1,10 @@
-.SeasonSelector{
-    display: flex;
-    flex-direction: column;
+.SeasonSelector {
+  display: flex;
+  flex-direction: column;
+}
+
+.SeasonList {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
 }
