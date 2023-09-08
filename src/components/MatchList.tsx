@@ -20,8 +20,8 @@ export default function MatchList({ matches, teams, seasonId }: props) {
     return (
       <div className={styles.MatchCard} onClick={() => router.push(`${seasonId}/${match.id}`)}>
         <p>{getMatchDisplayName(match.id)}</p>
-        <div className={styles['MatchCardTeam' + team1.name]} />
-        <div className={styles['MatchCardTeam' + team2.name]} />
+        <div className={styles['MatchCardTeam' + team1?.name]} />
+        <div className={styles['MatchCardTeam' + team2?.name]} />
       </div>
     );
   };

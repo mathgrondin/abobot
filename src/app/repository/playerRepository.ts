@@ -22,7 +22,7 @@ export function getPlayer(playerId: string): Promise<Player | undefined>{
     });
 }
 
-export async function createPlayer(playerCandidate: Player): Promise<Player | undefined>{
+export async function createPlayer(playerCandidate: Player): Promise<Player>{
   const playerId = randomUUID();
   const player: Player = {
     ...playerCandidate,
@@ -32,12 +32,12 @@ export async function createPlayer(playerCandidate: Player): Promise<Player | un
   return Promise.resolve()
     .then(() =>  writeDocument(PLAYER_COLLECTION_ID, playerId, player))
     .then(() => {
-      console.log("New Player Created", JSON.stringify(player))
-      return player
+      console.log('New Player Created', JSON.stringify(player));
+      return player;
     });
 }
 
-export function updatePlayer(player: Player): Promise<Player | undefined>{
+export function updatePlayer(player: Player): Promise<Player>{
   return Promise.resolve()
     .then(() =>  updateDocument(PLAYER_COLLECTION_ID, player.id, player))
     .then(() => player);

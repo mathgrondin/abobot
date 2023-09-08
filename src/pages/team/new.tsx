@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import React, { FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Screen from '../../components/Screen';
 import ScreenTitle from '../../components/ScreenTitle';
 import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
@@ -7,7 +7,6 @@ import ScreenSubtitle from '../../components/ScreenSubtitle';
 import { Player } from '../../app/repository/playerRepository';
 import Separator from '../../components/Separator';
 import ShadowButton from '../../components/ShadowButton';
-import { useRouter } from 'next/router';
 import { Team } from '../../app/repository/teamRepository';
 
 export type props = {
@@ -32,19 +31,16 @@ function PlayerEntry({
 }
 
 export default function NewTeam({ seasonId }: props) {
-  const router = useRouter();
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [name, setName] = useState<string>('');
   const [teamName, setTeamName] = useState<string>('');
-  const [isLoading, setLoading] = useState<boolean>(false);
   const seasonDisplayName = getSeasonDisplayName(seasonId);
 
   const addPlayer = () => {
-    console.log('playerName', name);
     const playerName = name;
     const newPlayer: Player = {
       name: playerName,
-      id: undefined,
+      id: '',
       alias: [playerName],
     };
     setPlayerList([...playerList, newPlayer]);
@@ -53,7 +49,6 @@ export default function NewTeam({ seasonId }: props) {
   const updateName = (newName: string, index: number) => {
     playerList[index].name = newName;
     playerList[index].alias[0] = newName;
-    console.log('new value', newName, playerList[index]);
     setPlayerList([...playerList]);
   };
 
@@ -61,7 +56,6 @@ export default function NewTeam({ seasonId }: props) {
     // setLoading(true);
     const createdPlayers = await Promise.all(
       playerList.map(async (p) => {
-        console.log('Create p', p.name, JSON.stringify(p));
         const response = await fetch('/api/player', {
           method: 'POST',
           body: JSON.stringify(p),
@@ -73,7 +67,6 @@ export default function NewTeam({ seasonId }: props) {
       })
     );
 
-    console.log('createdPlayers', createdPlayers);
     const team: Team = {
       id: '',
       name: teamName,

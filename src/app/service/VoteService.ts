@@ -1,4 +1,4 @@
-import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply, getThirdStarMessage } from '../../helpers/replyHelper';
+import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply } from '../../helpers/replyHelper';
 import { Match } from '../repository/matchRepository';
 import { Player } from '../repository/playerRepository';
 import { Team } from '../repository/teamRepository';
@@ -14,7 +14,7 @@ function getPlayersByMatch(match: Match): Promise<Player[]> {
     })
     .then(async ([teamA, teamB]: Team[]) => {
       const players = (await Promise.all([...teamA.playerIds, ...teamB.playerIds].map(async (playerId) =>
-        await PlayerWorkflow.getPlayer(playerId)
+        await PlayerWorkflow.getPlayer(playerId) as Player
       )));
       return players;
     });
@@ -31,7 +31,7 @@ function onNewMessage(match: Match, userId: string, message: string): Promise<st
       }
       return undefined;
     })
-    .then((playerId: string): string[] | undefined => {
+    .then((playerId: string | undefined) => {
       if (!playerId) {
         return [getPlayerNotFoundMessage()];
       }

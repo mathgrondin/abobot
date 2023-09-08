@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const teamId = (context.params?.teamId || '') as string;
   if (teamId) {
     const team = await TeamWorkflow.getTeam(teamId);
-    if (team.id) {
+    if (team?.id) {
       const season = await SeasonWorkflow.getSeason(team.seasonId);
       const players = await PlayerWorkflow.getPlayersByTeamId(teamId);
 

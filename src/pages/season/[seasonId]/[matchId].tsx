@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       await Promise.all(
         match.teamIds.map(async (teamId) => await TeamWorkflow.getTeam(teamId))
       )
-    ).filter((team) => !!team);
+    ).filter((team) => !!team) as Team[];
 
     const players = (
       await Promise.all(

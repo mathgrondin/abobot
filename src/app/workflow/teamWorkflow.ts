@@ -1,3 +1,4 @@
+import { Season } from '../repository/seasonRepository';
 import TeamRepository, { Team } from '../repository/teamRepository';
 import { ValidateNewTeam } from '../validator/teamValidator';
 import SeasonWorkflow from './seasonWorkflow';
@@ -11,7 +12,7 @@ const getTeamsByName = (teamId: string): Promise<Team[]> => {
   return TeamRepository.getTeamsByName(teamId);
 };
 
-const createTeam = (teamCandidate: Team): Promise<Team | undefined> => {
+const createTeam = (teamCandidate: Team): Promise<Team> => {
   return Promise.resolve()
     .then(async () => {
       await ValidateNewTeam(teamCandidate);
@@ -19,7 +20,7 @@ const createTeam = (teamCandidate: Team): Promise<Team | undefined> => {
       return team;
     })
     .then(async (team) => {
-      const season = await SeasonWorkflow.getSeason(team.seasonId);
+      const season = await SeasonWorkflow.getSeason(team.seasonId) as Season;
       season.teamIds.push(team.id);
       await SeasonWorkflow.updateSeason(season);
       return team;
@@ -29,11 +30,11 @@ const createTeam = (teamCandidate: Team): Promise<Team | undefined> => {
 };
 
 const updateTeam = (): Promise<Team | undefined> => {
-  return undefined;
+  return Promise.resolve(undefined);
 };
 
 const deleteTeam = (): Promise<Team | undefined> => {
-  return undefined;
+  return Promise.resolve(undefined);
 };
 
 const TeamWorkflow = {

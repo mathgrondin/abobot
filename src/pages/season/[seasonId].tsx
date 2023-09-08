@@ -43,7 +43,7 @@ export default function SeasonScreen({ season, matches, teams }: props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const seasonId = context.params.seasonId as string;
+  const seasonId = context.params?.seasonId as string;
   const season = await SeasonWorkflow.getSeason(seasonId);
   if (season) {
     const { matchIds, teamIds } = season;
