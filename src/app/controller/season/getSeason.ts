@@ -30,17 +30,17 @@ const SeasonRequestError_InvalidRequest = () => new ApiError(404, 'Invalid reque
 *         description: 
 */
 export async function getSeason(request: NextApiRequest): Promise<Season | Season[]> {
-    const seasonId = request.query.seasonId as string;
-    if (seasonId) {
-        const season = await SeasonWorkflow.getSeason(seasonId);
-        if (season == null) {
-            throw SeasonRequestError_SeasonNotFound();
-        }
-        return season;
+  const seasonId = request.query.seasonId as string;
+  if (seasonId) {
+    const season = await SeasonWorkflow.getSeason(seasonId);
+    if (season == null) {
+      throw SeasonRequestError_SeasonNotFound();
     }
-    const all = request.query.all as string === 'true';
-    if (all) {
-        return await SeasonWorkflow.getAllSeasons();
-    }
-    throw SeasonRequestError_InvalidRequest();
+    return season;
+  }
+  const all = request.query.all as string === 'true';
+  if (all) {
+    return await SeasonWorkflow.getAllSeasons();
+  }
+  throw SeasonRequestError_InvalidRequest();
 }

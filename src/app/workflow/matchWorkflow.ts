@@ -65,7 +65,7 @@ async function addMessage(userId: string, message: string) {
 
 async function updateMatch(match: Match): Promise<Match>{
   return MatchRepository.updateMatch(match);
-};
+}
 
 async function deleteMatch(matchId: number): Promise<void>{
   const match = await getMatch(matchId);
@@ -82,8 +82,8 @@ async function deleteMatch(matchId: number): Promise<void>{
     await SeasonWorkflow.updateSeason(season);
   }
 
-  return MatchRepository.deleteMatch(`${matchId}`)
-};
+  return MatchRepository.deleteMatch(`${matchId}`);
+}
 
 const MatchWorkflow = {
   getMatch,

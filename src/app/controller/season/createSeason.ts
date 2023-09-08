@@ -21,7 +21,7 @@ import SeasonWorkflow from '../../workflow/seasonWorkflow';
 *         description: 
 */
 export const createSeason = async (request : NextApiRequest) => {
-    const seasonId = request.query.seasonId as string;
-    const season = await SeasonWorkflow.createSeason(seasonId);
-    return season;
+  const seasonId = request.query.seasonId as string;
+  const season = await SeasonWorkflow.createSeason(seasonId);
+  return season;
 };

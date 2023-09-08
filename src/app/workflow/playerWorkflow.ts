@@ -11,7 +11,7 @@ async function getPlayer(playerId: string): Promise<Player | undefined> {
   return player;
 }
 
-async function  getPlayersByTeamId(teamId: string): Promise<Player[] | undefined> {
+async function  getPlayersByTeamId(teamId: string): Promise<Player[]> {
   if(!teamId){
     throw PlayerWorkflowError_InvalidTeamId();
   }
@@ -20,26 +20,26 @@ async function  getPlayersByTeamId(teamId: string): Promise<Player[] | undefined
     throw PlayerWorkflowError_TeamIdNotFound(teamId); 
   }
   const players = (await Promise.all(team.playerIds.map(async (playerId) => 
-    await getPlayer(playerId))
+    await getPlayer(playerId) as Player)
   ));
   return players;
 }
 
-async function createPlayer(playerCandidate: Player): Promise<Player | undefined> {
+async function createPlayer(playerCandidate: Player): Promise<Player> {
   return Promise.resolve()
     .then(async () => validateNewPlayer(playerCandidate))
     .then(async () => await PlayerRepository.createPlayer(playerCandidate));
 }
 
-async function updatePlayer(playerCandidate: Player): Promise<Player | undefined> {
+async function updatePlayer(playerCandidate: Player): Promise<Player> {
   return Promise.resolve()
-     .then(async () => await getPlayer(playerCandidate.id))
-     .then(async (player) => await validateUpdatedPlayer(player, playerCandidate))
-     .then(async () => await PlayerRepository.updatePlayer(playerCandidate))
-};
+    .then(async () => await getPlayer(playerCandidate.id))
+    .then(async (player) => await validateUpdatedPlayer(player, playerCandidate))
+    .then(async () => await PlayerRepository.updatePlayer(playerCandidate));
+}
 
-const deletePlayer = (): Promise<Player | undefined> => {
-  return undefined;
+const deletePlayer = (): Promise<undefined> => {
+  return Promise.resolve(undefined);
 };
 
 const PlayerWorkflow = {

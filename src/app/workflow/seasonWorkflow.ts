@@ -30,7 +30,7 @@ const updateSeason = (season: Season): Promise<Season | undefined> => {
 };
 
 const deleteSeason = (): Promise<Season | undefined> => {
-  return undefined;
+  return Promise.resolve(undefined);
 };
 
 const SeasonWorkflow = {

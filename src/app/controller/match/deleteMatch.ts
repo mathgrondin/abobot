@@ -1,5 +1,5 @@
-import MatchWorkflow from "../../workflow/matchWorkflow"
-import { NextApiRequest } from "next"
+import MatchWorkflow from '../../workflow/matchWorkflow';
+import { NextApiRequest } from 'next';
 
 /**
  * @swagger
@@ -27,7 +27,7 @@ import { NextApiRequest } from "next"
  * }
  */
 export async function deleteMatch(request: NextApiRequest) {
-    const matchId = parseInt(request.query.matchId as string);
-    await MatchWorkflow.deleteMatch(matchId);
-    return "Ok"
+  const matchId = parseInt(request.query.matchId as string);
+  await MatchWorkflow.deleteMatch(matchId);
+  return 'Ok';
 }

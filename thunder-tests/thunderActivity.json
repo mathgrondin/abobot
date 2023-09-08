@@ -1,27 +1,105 @@
 [
-  {
-    "_id": "5fdaf424-7f11-4335-99d2-f00befcdf804",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/player",
-    "url": "http://localhost:3000/api/player?playerId=15f3619b-0bee-45e4-b86e-ec492ff44911",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2022-09-25T19:50:01.156Z",
-    "modified": "2022-09-25T19:58:26.386Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "playerId",
-        "value": "15f3619b-0bee-45e4-b86e-ec492ff44911",
-        "isPath": false
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": "{}",
-      "form": []
+    {
+        "_id": "5fdaf424-7f11-4335-99d2-f00befcdf804",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:3000/api/player",
+        "url": "http://localhost:3000/api/player?playerId=15f3619b-0bee-45e4-b86e-ec492ff44911",
+        "method": "PUT",
+        "sortNum": 0,
+        "created": "2022-09-25T19:50:01.156Z",
+        "modified": "2022-09-25T19:58:26.386Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "playerId",
+                "value": "15f3619b-0bee-45e4-b86e-ec492ff44911",
+                "isPath": false
+            }
+        ],
+        "body": {
+            "type": "json",
+            "raw": "{}",
+            "form": []
+        },
+        "tests": []
     },
-    "tests": []
-  }
+    {
+        "_id": "ba145adf-670d-480b-95a2-e7f65922f3fd",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:3000/api/season?seasonId=20232024",
+        "url": "http://localhost:3000/api/season?seasonId=20232024",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-08-13T19:11:14.205Z",
+        "modified": "2023-08-13T19:11:14.205Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "seasonId",
+                "value": "20232024",
+                "isPath": false
+            }
+        ],
+        "tests": []
+    },
+    {
+        "_id": "8b873510-0d8a-48b7-81c5-1b0657fd8dc0",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:3000/api/season?seasonId=20232024",
+        "url": "http://localhost:3000/api/season?seasonId=20232024",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-13T19:11:24.919Z",
+        "modified": "2023-08-13T19:11:24.919Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "seasonId",
+                "value": "20232024",
+                "isPath": false
+            }
+        ],
+        "tests": []
+    },
+    {
+        "_id": "f505e596-d96d-4da5-b87c-fc68256ea514",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:3000/api/team",
+        "url": "http://localhost:3000/api/team",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-08-13T19:21:44.586Z",
+        "modified": "2023-08-13T19:21:44.586Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"name\": \"vert\",\n  \"seasonId\": \"20232024\",\n  \"iconPath\": \"/teamIcons/vert.png\"\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "c32732a0-8345-4496-8253-265c7e2fe620",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:3000/api/team",
+        "url": "http://localhost:3000/api/team",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-13T19:21:51.097Z",
+        "modified": "2023-08-13T19:21:51.097Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"name\": \"vert\",\n  \"seasonId\": \"20232024\",\n  \"iconPath\": \"/teamIcons/vert.png\"\n}",
+            "form": []
+        },
+        "tests": []
+    }
 ]

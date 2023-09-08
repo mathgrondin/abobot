@@ -30,13 +30,14 @@ function compileVotes(match: Match, teams: Team[], players: Player[]): Star[] {
       if (i > MAX_VOTE_COUNT) {
         return;
       }
-      const player = players.find(p => p.id === v);
-      if (!player) {
+      const playerCandidate = players.find(p => p.id === v);
+      if (playerCandidate == null) {
         console.error(`"${v}" does not match any player`);
       }
+      const player = playerCandidate as Player;
       const playerIndex = stars.findIndex(s => s.id === player.id);
       if (playerIndex < 0) {
-        const team = teams.find(m => m.playerIds.includes(player.id));
+        const team = teams.find(m => m.playerIds.includes(player.id)) as Team;
         stars.push({
           id: player.id,
           name: player.name,

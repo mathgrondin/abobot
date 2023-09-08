@@ -1,4 +1,4 @@
-export const asyncSafetyWrap = async <T>(unsafeFunction: () => Promise<T>, fallback: T | undefined = undefined): Promise<T> => {
+export const asyncSafetyWrap = async <T>(unsafeFunction: () => Promise<T>, fallback: T | undefined = undefined): Promise<T | undefined> => {
   try {
     return await unsafeFunction();
   } catch (error) {
@@ -8,7 +8,7 @@ export const asyncSafetyWrap = async <T>(unsafeFunction: () => Promise<T>, fallb
   return fallback;
 };
 
-export const safetyWrap = <T>(unsafeFunction: () => T, fallback: T | undefined = undefined): T => {
+export const safetyWrap = <T>(unsafeFunction: () => T, fallback: T | undefined = undefined): T | undefined => {
   try {
     return unsafeFunction();
   } catch (error) {

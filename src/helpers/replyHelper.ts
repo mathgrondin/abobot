@@ -34,28 +34,28 @@ export function getThirdStarMessage(): string {
   return thirdStar[randomIndex];
 }
 
-const secondStar = [
-  'Bien vu! Quel est ton choix pour la 2e?',
-  'Parfait! Ta 2e Étoile?',
-  'C\'est noté! À qui veux-tu donner la 2e? ',
-  'Ben oui! Ta 2e Étoile?',
-  'Très drôle, en effet! Pour ta 2e?',
-  'Bien vu! 2e Étoile?',
-  'Clairement. À qui revient la 2e Étoile? '
-];
+// const secondStar = [
+//   'Bien vu! Quel est ton choix pour la 2e?',
+//   'Parfait! Ta 2e Étoile?',
+//   'C\'est noté! À qui veux-tu donner la 2e? ',
+//   'Ben oui! Ta 2e Étoile?',
+//   'Très drôle, en effet! Pour ta 2e?',
+//   'Bien vu! 2e Étoile?',
+//   'Clairement. À qui revient la 2e Étoile? '
+// ];
 
 
-const firstStar = [
-  'Parfait ça! On y est presque! Première Étoile?',
-  'Je pensais justement à ça aussi! Ta Première Étoile?',
-  'Hah! Okay! Finalement, ta Première Étoile?',
-  'Clairement. Finalement, ta Première?',
-  'C\'est noté. À qui décernes-tu l\'Étoile Numéro 1 ?',
-  'Ça me va! Finalement ta Première Étoile?',
-  'Yes! Et finalement, ta 1e Étoile?',
-  'Haha okay! Roulement de tambour, ta Première Étoile?',
-  'Parf. Finalement, comme 1e Étoile?'
-];
+// const firstStar = [
+//   'Parfait ça! On y est presque! Première Étoile?',
+//   'Je pensais justement à ça aussi! Ta Première Étoile?',
+//   'Hah! Okay! Finalement, ta Première Étoile?',
+//   'Clairement. Finalement, ta Première?',
+//   'C\'est noté. À qui décernes-tu l\'Étoile Numéro 1 ?',
+//   'Ça me va! Finalement ta Première Étoile?',
+//   'Yes! Et finalement, ta 1e Étoile?',
+//   'Haha okay! Roulement de tambour, ta Première Étoile?',
+//   'Parf. Finalement, comme 1e Étoile?'
+// ];
 
 const conclusion = [
   'J\'ai noté le tout! Merci pour ta participation et bonne fin de match!',
@@ -77,6 +77,7 @@ const conclusion = [
 function getReplyFromCount(count: number){
   switch(count){
   case 0: return conclusion;
+  default: return conclusion;
   }
 }
 

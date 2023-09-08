@@ -29,7 +29,6 @@ import PlayerWorkflow from '../../workflow/playerWorkflow';
 *         description: 
 */
 export async function updatePlayer(request: NextApiRequest): Promise<Player> {
-  const playerId = request.query.playerId as string;
   const player = await PlayerWorkflow.updatePlayer(request.body as Player);
   return player;
 }

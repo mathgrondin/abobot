@@ -31,6 +31,12 @@ import TeamWorkflow from '../../workflow/teamWorkflow';
 *         description: 
 */
 export async function createTeam(request: NextApiRequest): Promise<Team> {
-  const team = await TeamWorkflow.createTeam(request.body as Team);
+  let teamParam: Team;
+  try {
+    teamParam = JSON.parse(request.body);
+  } catch (e) {
+    teamParam = request.body;
+  }
+  const team = await TeamWorkflow.createTeam(teamParam);
   return team;
 }

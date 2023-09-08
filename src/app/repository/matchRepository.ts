@@ -27,7 +27,7 @@ function getMatch(matchId: string): Promise<Match | undefined> {
     });
 }
 
-function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefined> {
+function createMatch(matchId: string, teamIds: string[]): Promise<Match> {
   const match: Match = {
     id: matchId,
     teamIds,
@@ -43,7 +43,7 @@ function createMatch(matchId: string, teamIds: string[]): Promise<Match | undefi
     .then(() => match);
 }
 
-function updateMatch(match: Match): Promise<Match | undefined> {
+function updateMatch(match: Match): Promise<Match> {
   return Promise.resolve()
     .then(() => updateDocument(MATCHS_COLLECTION_ID, match.id, { ...match }))
     .then(() => match);
