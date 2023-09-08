@@ -46,7 +46,10 @@ function createTeam(teamCandidate: Team): Promise<Team | undefined> {
 
   return Promise.resolve()
     .then(() => writeDocument(TEAMS_COLLECTION_ID, teamId, team))
-    .then(() => team);
+    .then(() => {
+      console.log("New Team Created", JSON.stringify(team))
+      return team
+    });
 }
 
 

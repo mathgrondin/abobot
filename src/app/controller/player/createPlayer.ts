@@ -29,6 +29,12 @@ import PlayerWorkflow from '../../workflow/playerWorkflow';
 *         description: 
 */
 export async function createPlayer(request: NextApiRequest): Promise<Player> {
-  const player = await PlayerWorkflow.createPlayer(request.body as Player);
+  var playerParam: Player;
+  try {
+    playerParam = JSON.parse(request.body);
+  } catch (e) {
+    playerParam = request.body;
+  }
+  const player = await PlayerWorkflow.createPlayer(playerParam);
   return player;
 }

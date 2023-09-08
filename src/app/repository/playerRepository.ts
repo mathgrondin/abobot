@@ -31,7 +31,10 @@ export async function createPlayer(playerCandidate: Player): Promise<Player | un
     
   return Promise.resolve()
     .then(() =>  writeDocument(PLAYER_COLLECTION_ID, playerId, player))
-    .then(() => player);
+    .then(() => {
+      console.log("New Player Created", JSON.stringify(player))
+      return player
+    });
 }
 
 export function updatePlayer(player: Player): Promise<Player | undefined>{

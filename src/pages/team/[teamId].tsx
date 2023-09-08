@@ -12,7 +12,6 @@ import styles from './TeamPage.module.scss';
 import Image from 'next/image';
 import PlayerWorkflow from '../../app/workflow/playerWorkflow';
 import { Player } from '../../app/repository/playerRepository';
-import CreatePLayer from '../../components/CreatePLayer';
 
 type props = {
   team: Team;
@@ -39,7 +38,6 @@ export default function TeamScreen({ team, season, players }: props) {
         <Image src={team.iconPath} alt={team.name} layout="fill" />
       </div>
       <div className={styles.PlayerList}>
-        <CreatePLayer />
         {players.map((player) => (
           <PlayerCard key={player.id} player={player} />
         ))}
