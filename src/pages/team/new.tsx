@@ -1,14 +1,14 @@
-import { GetServerSideProps } from "next";
-import React, { FormEvent, FormEventHandler, useEffect, useState } from "react";
-import Screen from "../../components/Screen";
-import ScreenTitle from "../../components/ScreenTitle";
-import { getSeasonDisplayName } from "../../helpers/getSeasonDisplayName";
-import ScreenSubtitle from "../../components/ScreenSubtitle";
-import { Player } from "../../app/repository/playerRepository";
-import Separator from "../../components/Separator";
-import ShadowButton from "../../components/ShadowButton";
-import { useRouter } from "next/router";
-import { Team } from "../../app/repository/teamRepository";
+import { GetServerSideProps } from 'next';
+import React, { FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import Screen from '../../components/Screen';
+import ScreenTitle from '../../components/ScreenTitle';
+import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
+import ScreenSubtitle from '../../components/ScreenSubtitle';
+import { Player } from '../../app/repository/playerRepository';
+import Separator from '../../components/Separator';
+import ShadowButton from '../../components/ShadowButton';
+import { useRouter } from 'next/router';
+import { Team } from '../../app/repository/teamRepository';
 
 export type props = {
   seasonId: string;
@@ -21,7 +21,7 @@ function PlayerEntry({
 }: {
   playerName: string;
   index: number;
-  update: Function;
+  update: (string, number) => void;
 }) {
   return (
     <input
@@ -34,13 +34,13 @@ function PlayerEntry({
 export default function NewTeam({ seasonId }: props) {
   const router = useRouter();
   const [playerList, setPlayerList] = useState<Player[]>([]);
-  const [name, setName] = useState<string>("");
-  const [teamName, setTeamName] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [teamName, setTeamName] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
   const seasonDisplayName = getSeasonDisplayName(seasonId);
 
   const addPlayer = () => {
-    console.log("playerName", name);
+    console.log('playerName', name);
     const playerName = name;
     const newPlayer: Player = {
       name: playerName,
@@ -53,7 +53,7 @@ export default function NewTeam({ seasonId }: props) {
   const updateName = (newName: string, index: number) => {
     playerList[index].name = newName;
     playerList[index].alias[0] = newName;
-    console.log("new value", newName, playerList[index]);
+    console.log('new value', newName, playerList[index]);
     setPlayerList([...playerList]);
   };
 
@@ -61,44 +61,37 @@ export default function NewTeam({ seasonId }: props) {
     // setLoading(true);
     const createdPlayers = await Promise.all(
       playerList.map(async (p) => {
-        console.log("Create p", p.name, JSON.stringify(p));
-        const response = await fetch(`/api/player`, {
-          method: "POST",
+        console.log('Create p', p.name, JSON.stringify(p));
+        const response = await fetch('/api/player', {
+          method: 'POST',
           body: JSON.stringify(p),
-        })
+        });
         if(response.ok){
-          return await response.json()
+          return await response.json();
         }
-        return null
+        return null;
       })
-    )
+    );
 
-    console.log("createdPlayers", createdPlayers)
+    console.log('createdPlayers', createdPlayers);
     const team: Team = {
-      id: "",
+      id: '',
       name: teamName,
       seasonId,
-      iconPath: "/teamIcons/blanc.png",
+      iconPath: '/teamIcons/blanc.png',
       playerIds: createdPlayers.map(p => p.id)
-    }
+    };
 
-    await fetch(`/api/team`, {
-      method: "POST",
+    await fetch('/api/team', {
+      method: 'POST',
       body: JSON.stringify(team),
-    })
-
-    // if(response.ok){
-    //   router.push(`/season/${seasonId}`);
-    //   return;
-    // }
-    // const {message} = await response.json();
-    // alert(message);
+    });
   };
 
   return (
     <Screen>
       <ScreenTitle title={seasonDisplayName} />
-      <ScreenSubtitle subtitle={"New Team"} />
+      <ScreenSubtitle subtitle={'New Team'} />
       <form>
         <input
           placeholder="Team name"
