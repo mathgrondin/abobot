@@ -22,9 +22,11 @@ function getSeason(seasonId: string): Promise<Season | undefined> {
 }
 
 function getAllSeasons(): Promise<Season[]> {
+  console.log('Getting all seasons');
   return Promise.resolve()
     .then(() => readCollection(SEASONS_COLLECTION_ID))
     .then(collectionSnapshot => {
+      console.log('Snapshot', collectionSnapshot.docs);
       return collectionSnapshot.docs.map(document => document.data() as Season);
     });
 }
