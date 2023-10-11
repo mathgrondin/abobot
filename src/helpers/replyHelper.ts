@@ -1,6 +1,6 @@
 export function getPlayerNotFoundMessage(): string {
   const replyOptions = [
-    'Désolé, il semblerait que ce joueur ne joue pas ce soir. As tu quelqu\'un d\'autre en tête?'
+    '🤖 Désolé, je n\'ai pas compris. Envoie le nom complet, sans fautes, de la personne pour qui tu veux voter! 🤖'
   ];
   const randomIndex = Math.floor(Math.random() * replyOptions.length);
   return replyOptions[randomIndex];
