@@ -45,7 +45,7 @@ async function addMessage(userId: string, message: string) {
     throw MatchWorkflowError_NoMatchAtTheMoment();
   }
 
-  const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message);
+  const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message, true);
 
   if (playerId) {
     if (!currentMatch.messages[userId]) {
@@ -92,9 +92,7 @@ async function addMessageTest(message: string){
     throw MatchWorkflowError_NoMatchAtTheMoment();
   }
 
-  const [reply, playerName] = await VoteService.onNewMessageTest(currentMatch, message);
-  console.log("player", playerName)
-  console.log("reply", reply)
+  await VoteService.onNewMessageTest(currentMatch, message);
 }
 
 const MatchWorkflow = {
