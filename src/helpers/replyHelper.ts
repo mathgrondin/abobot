@@ -1,6 +1,6 @@
 export function getPlayerNotFoundMessage(): string {
   const replyOptions = [
-    '🤖Désolé, je n\'ai pas compris. Envoie le nom complet, sans fautes, de la personne pour qui tu veux voter!🤖'
+    '🤖 Désolé, je n\'ai pas compris. Envoie le nom complet, sans fautes, de la personne pour qui tu veux voter! 🤖'
   ];
   const randomIndex = Math.floor(Math.random() * replyOptions.length);
   return replyOptions[randomIndex];
