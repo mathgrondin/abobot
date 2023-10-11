@@ -4,6 +4,7 @@ import { Player } from '../repository/playerRepository';
 import { Team } from '../repository/teamRepository';
 import PlayerWorkflow from '../workflow/playerWorkflow';
 import TeamWorkflow from '../workflow/teamWorkflow';
+import FuzzySet from 'fuzzyset.js'
 
 function getPlayersByMatch(match: Match): Promise<Player[]> {
   return Promise.resolve()
@@ -23,9 +24,7 @@ function getPlayersByMatch(match: Match): Promise<Player[]> {
 function onNewMessage(match: Match, userId: string, message: string): Promise<string[]> {
   return getPlayersByMatch(match)
     .then(async (players: Player[]) => {
-      const votedPlayer = players.find((p) =>
-        p.alias.find(a => a.toLowerCase() === message.toLowerCase())
-      );
+      const votedPlayer = players.find((p) => p.alias.find(a => a.toLowerCase() === message.toLowerCase()))
       if (votedPlayer) {
         return votedPlayer.id;
       }
@@ -46,8 +45,33 @@ function onNewMessage(match: Match, userId: string, message: string): Promise<st
     });
 }
 
+function onNewMessageTest(match: Match, message: string): Promise<string[]> {
+  return getPlayersByMatch(match)
+    .then(async (players: Player[]) => {
+      const votedPlayer = findPlayerByMessage(players, message);
+      if (votedPlayer) {
+        return votedPlayer.id;
+      }
+      return undefined;
+    })
+    .then((playerId: string | undefined) => {
+      if (!playerId) {
+        return [getPlayerNotFoundMessage()];
+      }
+      return [getReply(0), playerId];
+    });
+}
+
+function findPlayerByMessage(players: Player[], message: string) {
+  const fuzzyPlayers = FuzzySet(players.map(p => p.name))
+  const result = fuzzyPlayers.get(message);
+  console.log("Match:", JSON.stringify(result))
+  return players[0];
+}
+
 const VoteService = {
-  onNewMessage
+  onNewMessage,
+  onNewMessageTest
 };
 
 export default VoteService;

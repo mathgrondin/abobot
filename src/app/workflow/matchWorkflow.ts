@@ -85,10 +85,23 @@ async function deleteMatch(matchId: number): Promise<void>{
   return MatchRepository.deleteMatch(`${matchId}`);
 }
 
+async function addMessageTest(message: string){
+  const currentMatchId = getCurrentMatchId();
+  const currentMatch = await getMatch(currentMatchId);
+  if (currentMatch == null) {
+    throw MatchWorkflowError_NoMatchAtTheMoment();
+  }
+
+  const [reply, playerName] = await VoteService.onNewMessageTest(currentMatch, message);
+  console.log("player", playerName)
+  console.log("reply", reply)
+}
+
 const MatchWorkflow = {
   getMatch,
   createMatch,
   addMessage,
+  addMessageTest,
   updateMatch,
   deleteMatch
 };

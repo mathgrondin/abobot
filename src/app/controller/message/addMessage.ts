@@ -38,3 +38,10 @@ export async function addMessage(request: NextApiRequest): Promise<string> {
   await MatchWorkflow.addMessage(id, text);
   return 'ok';
 }
+
+export async function addMessageTest(request: NextApiRequest): Promise<string> {
+  const { message } = request.body;
+  console.log("message:", message)
+  await MatchWorkflow.addMessageTest(message);
+  return 'ok';
+}
