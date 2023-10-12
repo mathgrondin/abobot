@@ -45,16 +45,16 @@ async function addMessage(userId: string, message: string) {
     throw MatchWorkflowError_NoMatchAtTheMoment();
   }
 
-  const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message, true);
+  if (!currentMatch.messages[userId]) {
+    currentMatch.messages[userId] = [];
+  }
+  if(currentMatch.messages[userId].length >= MAX_VOTE_COUNT){
+    // user already voted
+    return;
+  }
 
+  const [reply, playerId] = await VoteService.onNewMessage(currentMatch, userId, message, true);  
   if (playerId) {
-    if (!currentMatch.messages[userId]) {
-      currentMatch.messages[userId] = [];
-    }
-    if(currentMatch.messages[userId].length >= MAX_VOTE_COUNT){
-      // user already voted
-      return;
-    }
     currentMatch.messages[userId].push(playerId);
     await updateMatch(currentMatch);
   }
