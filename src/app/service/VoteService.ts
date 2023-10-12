@@ -22,6 +22,7 @@ function getPlayersByMatch(match: Match): Promise<Player[]> {
 }
 
 function onNewMessage(match: Match, userId: string, message: string, useFuzzy = false): Promise<string[]> {
+  console.log(' onNewMessage', userId, message);
   return getPlayersByMatch(match)
     .then(async (players: Player[]) => {
       let votedPlayer: Player | undefined = undefined;
@@ -57,13 +58,16 @@ function findPlayerByExcatAlias(players: Player[], alias: string): Player | unde
 function findPlayerByFuzzyAlias(players: Player[], alias: string): Player | undefined {
   const fuzzyPlayers = FuzzySet(players.map(p => p.name));
   const result = fuzzyPlayers.get(alias);
+  console.log('   result.length', result.length);
   if (result.length > 0) {
     const candidate = result.reduce(function (prev, current) {
       return (prev && prev[0] > current[0]) ? prev : current;
     });
     const [score, name] = candidate;
+    console.log('     candidate:', name, score);
     if (score >= 0.60) {
       const player = players.find((p) => p.name === name);
+      console.log('     player:', JSON.stringify(player));
       return player;
     }
   }
