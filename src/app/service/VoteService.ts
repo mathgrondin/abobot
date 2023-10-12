@@ -35,6 +35,10 @@ function onNewMessage(match: Match, userId: string, message: string, useFuzzy = 
       }
       return undefined;
     })
+    .catch((error) => {
+      console.log(' Error', JSON.stringify(error));
+      return undefined;
+    })
     .then((playerId: string | undefined) => {
       if (!playerId) {
         return [getPlayerNotFoundMessage()];
