@@ -1,9 +1,10 @@
-import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply } from '../../helpers/replyHelper';
+import FuzzySet from 'fuzzyset.js';
+import PlayerWorkflow from '../workflow/playerWorkflow';
+import TeamWorkflow from '../workflow/teamWorkflow';
 import { Match } from '../repository/matchRepository';
 import { Player } from '../repository/playerRepository';
 import { Team } from '../repository/teamRepository';
-import PlayerWorkflow from '../workflow/playerWorkflow';
-import TeamWorkflow from '../workflow/teamWorkflow';
+import { getDuplicateErrorMessage, getPlayerNotFoundMessage, getReply } from '../../helpers/replyHelper';
 
 function getPlayersByMatch(match: Match): Promise<Player[]> {
   return Promise.resolve()
@@ -20,13 +21,16 @@ function getPlayersByMatch(match: Match): Promise<Player[]> {
     });
 }
 
-function onNewMessage(match: Match, userId: string, message: string): Promise<string[]> {
+function onNewMessage(match: Match, userId: string, message: string, useFuzzy = false): Promise<string[]> {
   return getPlayersByMatch(match)
     .then(async (players: Player[]) => {
-      const votedPlayer = players.find((p) =>
-        p.alias.find(a => a.toLowerCase() === message.toLowerCase())
-      );
-      if (votedPlayer) {
+      let votedPlayer: Player | undefined = undefined;
+      if (useFuzzy) {
+        votedPlayer = findPlayerByFuzzyAlias(players, message);
+      } else {
+        votedPlayer = findPlayerByExcatAlias(players, message);
+      }
+      if (votedPlayer != undefined) {
         return votedPlayer.id;
       }
       return undefined;
@@ -46,8 +50,46 @@ function onNewMessage(match: Match, userId: string, message: string): Promise<st
     });
 }
 
+function findPlayerByExcatAlias(players: Player[], alias: string): Player | undefined {
+  return players.find((p) => p.alias.find(a => a.toLowerCase() === alias.toLowerCase()));
+}
+
+function findPlayerByFuzzyAlias(players: Player[], alias: string): Player | undefined {
+  const fuzzyPlayers = FuzzySet(players.map(p => p.name));
+  const result = fuzzyPlayers.get(alias);
+  if (result.length > 0) {
+    const candidate = result.reduce(function (prev, current) {
+      return (prev && prev[0] > current[0]) ? prev : current;
+    });
+    const [score, name] = candidate;
+    if (score >= 0.60) {
+      const player = players.find((p) => p.name === name);
+      return player;
+    }
+  }
+  return undefined;
+}
+
+function onNewMessageTest(match: Match, message: string): Promise<string[]> {
+  return getPlayersByMatch(match)
+    .then(async (players: Player[]) => {
+      const votedPlayer = findPlayerByFuzzyAlias(players, message);
+      if (votedPlayer) {
+        return votedPlayer.id;
+      }
+      return undefined;
+    })
+    .then((playerId: string | undefined) => {
+      if (!playerId) {
+        return [getPlayerNotFoundMessage()];
+      }
+      return [getReply(0), playerId];
+    });
+}
+
 const VoteService = {
-  onNewMessage
+  onNewMessage,
+  onNewMessageTest
 };
 
 export default VoteService;

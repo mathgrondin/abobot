@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next';
-import { addMessage } from './addMessage';
+import { addMessage, addMessageTest } from './addMessage';
 import { verificationChallenge } from './verificationChallenge';
 
 export const MessageController = {
@@ -7,6 +7,7 @@ export const MessageController = {
     switch (request.method) {
     case 'GET': return await verificationChallenge(request);
     case 'POST': return await addMessage(request);
+    case 'PUT': return await addMessageTest(request);
     }
   }
 };
