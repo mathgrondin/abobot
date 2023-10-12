@@ -61,7 +61,7 @@ function findPlayerByExcatAlias(players: Player[], alias: string): Player | unde
 function findPlayerByFuzzyAlias(players: Player[], alias: string): Player | undefined {
   const fuzzyPlayers = FuzzySet(players.map(p => p.name));
   const result = fuzzyPlayers.get(alias);
-  if (result.length > 0) {
+  if (result != null && result.length > 0) {
     const candidate = result.reduce(function (prev, current) {
       return (prev && prev[0] > current[0]) ? prev : current;
     });
