@@ -1,13 +1,19 @@
-import { GetServerSideProps } from 'next';
-import React, { useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
 import Screen from '../../components/Screen';
-import ScreenTitle from '../../components/ScreenTitle';
-import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
 import ScreenSubtitle from '../../components/ScreenSubtitle';
-import { Player } from '../../app/repository/playerRepository';
+import ScreenTitle from '../../components/ScreenTitle';
 import Separator from '../../components/Separator';
 import ShadowButton from '../../components/ShadowButton';
+import ShadowButtonLabel from '../../components/ShadowButtonLabel';
+import styles from './TeamCreationPage.module.scss'
+import { GetServerSideProps } from 'next';
+import { Player } from '../../app/repository/playerRepository';
 import { Team } from '../../app/repository/teamRepository';
+import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
+import { useRouter } from 'next/router';
+
+const TEAMS = ["bleu", "blanc", "rouge", "vert", "noir"]
 
 export type props = {
   seasonId: string;
@@ -24,6 +30,7 @@ function PlayerEntry({
 }) {
   return (
     <input
+      className={styles.BasicInput}
       onChange={(e) => update(e.target.value, index)}
       value={playerName}
     ></input>
@@ -31,9 +38,11 @@ function PlayerEntry({
 }
 
 export default function NewTeam({ seasonId }: props) {
+  const router = useRouter();
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [name, setName] = useState<string>('');
-  const [teamName, setTeamName] = useState<string>('');
+  const [teamName, setTeamName] = useState<string>(TEAMS[0]);
+  const [loading, setLoading] = useState<boolean>(false);
   const seasonDisplayName = getSeasonDisplayName(seasonId);
 
   const addPlayer = () => {
@@ -53,14 +62,14 @@ export default function NewTeam({ seasonId }: props) {
   };
 
   const createTeam = async () => {
-    // setLoading(true);
+    setLoading(true);
     const createdPlayers = await Promise.all(
       playerList.map(async (p) => {
         const response = await fetch('/api/player', {
           method: 'POST',
           body: JSON.stringify(p),
         });
-        if(response.ok){
+        if (response.ok) {
           return await response.json();
         }
         return null;
@@ -71,47 +80,70 @@ export default function NewTeam({ seasonId }: props) {
       id: '',
       name: teamName,
       seasonId,
-      iconPath: '/teamIcons/blanc.png',
+      iconPath: `/teamIcons/${teamName}.png`,
       playerIds: createdPlayers.map(p => p.id)
     };
 
-    await fetch('/api/team', {
+    const response = await fetch('/api/team', {
       method: 'POST',
       body: JSON.stringify(team),
     });
+    if(response.status == 200){
+      const createdTeam =  await response.json() as Team;
+      router.push(`/team/${createdTeam.id}`);
+    }
   };
+
+  const toTeam = (team: string) => {
+    return (
+      <div key={team} className={teamName == team ? styles.SelectedTeamImage : styles.TeamImage} onClick={() => setTeamName(team)}>
+        <Image src={`/teamIcons/${team}.png`} alt={teamName} layout='fill' />
+      </div>
+    );
+  };
+
+  if (loading) {
+    <Screen>
+      <ScreenTitle title={seasonDisplayName} />
+      <h2>Creating</h2>
+      <Separator />
+    </Screen>
+  }
 
   return (
     <Screen>
       <ScreenTitle title={seasonDisplayName} />
       <ScreenSubtitle subtitle={'New Team'} />
-      <form>
-        <input
-          placeholder="Team name"
-          onChange={(e) => setTeamName(e.target.value)}
-        ></input>
-      </form>
+      <div className={styles.TeamSelector}>
+        {TEAMS.map(toTeam)}
+      </div>
       <Separator />
       <h2>Players</h2>
       <Separator />
-      {playerList.map((value, index) => (
-        <PlayerEntry
-          playerName={value.name}
-          key={index}
-          index={index}
-          update={updateName}
-        />
-      ))}
-      <div>
+      <div className={styles.PlayerList}>
+        {
+
+          playerList.map((value, index) => (
+            <PlayerEntry
+              playerName={value.name}
+              key={index}
+              index={index}
+              update={updateName}
+            />
+          ))
+        }
+      </div>
+      <div className={styles.PlayerInputsContainer}>
         <input
+          className={styles.BasicInput}
           placeholder="player name"
           onChange={(e) => setName(e.target.value)}
         ></input>
-        <button onClick={() => addPlayer()}>add</button>
+        <ShadowButtonLabel onClick={() => addPlayer()} label='Add' />
       </div>
       <Separator />
       <ShadowButton onClick={() => createTeam()}>Create</ShadowButton>
-    </Screen>
+    </Screen >
   );
 }
 

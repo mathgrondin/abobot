@@ -1,0 +1,54 @@
+$image-size: 8.8rem;
+
+.PlayerInputsContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    column-gap: 1rem;
+    justify-content: center;
+    width: 90vw;
+
+    @media screen and (min-width: 720px) {
+        width: 70vw;
+    }
+
+}
+
+.TeamSelector {
+    display: flex;
+    gap: 2rem;
+}
+
+.TeamImage {
+    position: relative;
+    width: $image-size;
+    height: $image-size;
+
+    img {
+        border-radius: 50%;
+    }
+}
+
+.SelectedTeamImage {
+    position: relative;
+    width: $image-size;
+    height: $image-size;
+
+    img {
+        outline: 0.8rem solid #FFC93F;
+        border-radius: 50%;
+    }
+}
+
+.PlayerList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.BasicInput {
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    border: solid black 1px;
+    font-size: 2rem;
+}
