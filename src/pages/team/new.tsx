@@ -1,19 +1,19 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Screen from '../../components/Screen';
 import ScreenSubtitle from '../../components/ScreenSubtitle';
 import ScreenTitle from '../../components/ScreenTitle';
 import Separator from '../../components/Separator';
 import ShadowButton from '../../components/ShadowButton';
 import ShadowButtonLabel from '../../components/ShadowButtonLabel';
-import styles from './TeamCreationPage.module.scss'
+import styles from './TeamCreationPage.module.scss';
 import { GetServerSideProps } from 'next';
 import { Player } from '../../app/repository/playerRepository';
 import { Team } from '../../app/repository/teamRepository';
 import { getSeasonDisplayName } from '../../helpers/getSeasonDisplayName';
 import { useRouter } from 'next/router';
 
-const TEAMS = ["bleu", "blanc", "rouge", "vert", "noir"]
+const TEAMS = ['bleu', 'blanc', 'rouge', 'vert', 'noir'];
 
 export type props = {
   seasonId: string;
@@ -107,7 +107,7 @@ export default function NewTeam({ seasonId }: props) {
       <ScreenTitle title={seasonDisplayName} />
       <h2>Creating</h2>
       <Separator />
-    </Screen>
+    </Screen>;
   }
 
   return (
